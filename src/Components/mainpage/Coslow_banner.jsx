@@ -129,7 +129,7 @@ function Coslow_banner(){
             </div>
           </div>
           <div className="modal-login-container">
-              <div>아이디 찾기</div><div> | </div><div>비밀번호 찾기</div><div> | </div><div onClick={openSignupModal}>회원가입</div>
+              <div>CO-SLOW가 처음이신가요?</div><div onClick={openSignupModal} style={{ color: '#3CB502' }}>회원가입하기</div>
           </div>
 
           <div className="modal-login-footer-container">
