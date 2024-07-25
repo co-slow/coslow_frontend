@@ -3,6 +3,7 @@ import vegetable from './images/vegetable.png';
 import kakao from './images/kakao.png';
 import google from './images/google.png';
 import Modal from 'react-modal';
+import { useNavigate } from "react-router-dom";
 import { useState} from 'react';
 
 Modal.setAppElement('#root');
@@ -70,6 +71,10 @@ function Coslow_banner(){
       keep: e.target.checked,
     }));
   };
+  const navigate = useNavigate();
+  const handleafterloginClick = () => {
+    navigate('/afterlogin');
+  };
 
   return(
     <div className="Coslow-container">
@@ -132,8 +137,8 @@ function Coslow_banner(){
               <div>CO-SLOW가 처음이신가요?</div><div onClick={openSignupModal} style={{ color: '#3CB502' }}>회원가입하기</div>
           </div>
 
-          <div className="modal-login-footer-container">
-            <div className="modal-login-footer">
+          <div className="modal-login-footer-container" >
+            <div className="modal-login-footer" onClick={handleafterloginClick}>
               <button className="modal-login-button">로그인</button>
             </div>
             <span className="or">또는</span>
