@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // 캘린더 기본 스타일 추가
 import './Record_main.css';
-import plus from './images/plus.png';
 
 Modal.setAppElement('#root');
 
