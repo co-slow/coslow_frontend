@@ -7,6 +7,7 @@ import Challenge_main from './Components/challenge/Challenge_main';
 import Coslow_main from './Components/mainpage/Coslow_main';
 import AddExplain from './Components/mainpage/AddExplain'
 import Footer from './Components/mainpage/Footer'
+import DietRecord_write from './Components/record/DietRecord_write';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/' element={<div><Coslow_banner /><AddExplain /><Footer /></div>}/>
         <Route path='/afterlogin' element={<div><Coslow_main /><AddExplain /><Footer /></div>}/>
         <Route path='/challenge' element={<Challenge_main/>}/>
+        <Route path='/DietRecord_write' element={<DietRecord_write/>}/>
       </Routes>
     </Router>
   </React.StrictMode>,

@@ -16,10 +16,13 @@ function Challenge_main(){
 
   const navigate = useNavigate();
   const handleChallengeMainClick = () => {
-    navigate('/Challenge');
+    navigate('/challenge');
   };
   const handleCoslowBannerClick = () => {
     navigate('/');
+  };
+  const handleRecordList2Click = () => {
+    navigate('/record_list2');
   };
 
   return (
@@ -32,7 +35,7 @@ function Challenge_main(){
             </div>
             <div className="header-right">
               <div className="header-challenge" onClick={handleChallengeMainClick}>챌린지</div>
-              <div className="header-record">나의기록</div>
+              <div className="header-record" onClick={handleRecordList2Click}>나의기록</div>
               <div className="header-mypage">마이페이지</div>
               <div className="header-logout" onClick={handleCoslowBannerClick}>로그아웃</div>
             </div>
