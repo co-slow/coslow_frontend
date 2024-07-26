@@ -145,7 +145,8 @@ body {
 .vegetable-img img{
   width: 1513px;
   height: 896px;
-  transform: translateY(-67.4%);
+  margin-top: 2px;
+  /* transform: translateY(-67.4%); */
 }
 
 .overlay {
