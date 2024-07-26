@@ -1,0 +1,230 @@
+@font-face {
+  font-family: 'Pretendard-Medium';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-Black';
+  src: url('./font/Montserrat-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard-SemiBold';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+.Record-container{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1536px;
+  height: 940px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.Coslow-main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Coslow-header {
+  margin-top: 30px;
+  position: relative;
+}
+
+.Coslow-header-layout {
+  width: 1218px;
+  height: 80px;
+  border-radius: 73px;
+  background: #FFFFFF;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  margin-left: 100px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  margin-right: 100px;
+}
+
+.header-logo {
+  font-family: 'Montserrat-Black';
+  font-size: 24px;
+  font-weight: 900;
+  text-align: left;
+  color: #3CB502;
+}
+
+.header-challenge, .header-record, .header-mypage{
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+  line-height: 23.87px;
+  text-align: left;
+  cursor: pointer;
+  color: #0F3A0E;
+}
+
+.header-logout{
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+  line-height: 23.87px;
+  text-align: left;
+  cursor: pointer;
+  color: #BCC2C6;
+}
+
+.Record-category {
+  position: absolute;
+  top: 180px;
+  left: 450px;
+  display: flex;
+  gap: 63px;
+  text-align: center;
+}
+
+.Record-category span {
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+  color: #CCCCCC;
+  cursor: pointer;
+  text-align: center;
+}
+
+.Record-category span.active {
+  color: #000000;
+}
+
+.challenge-section {
+  position: absolute;
+  top: 236px;
+  left: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.challenge-section div {
+  font-family: 'Pretendard-Semibold';
+  font-size: 20px;
+  color: #3D4144;
+}
+
+.challenge-section div.active {
+  color: #3CB502;
+}
+
+.challenge-options {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 148px;
+  background-color: #F2F2F2;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: 25px;
+}
+
+.challenge-options div {
+  font-family: 'Pretendard-Medium';
+  font-size: 16px;
+  color: #949799;
+  padding: 10px;
+}
+
+.challenge-options div.active {
+  color: #3CB502;
+}
+
+.challenge-section div.challenge-options-container {
+  position: relative;
+}
+
+.challenge-section div.challenge-options-container.active .challenge-options {
+  display: flex;
+}
+
+.no-challenge-message {
+  position: absolute;
+  top: 492px;
+  left: 675px;
+  font-family: 'Pretendard-SemiBold';
+  font-size: 38px;
+  color: #CCCCCC;
+}
+
+.calendar {
+  position: absolute;
+  top: 240px;
+  left: 416px;
+  width: 397px;
+  height: 336.85px;
+  border-radius: 15px;
+  background-color: #F2F2F2;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.today-challenge {
+  position: absolute;
+  top: 183px;
+  left: 867px;
+  width: 469px;
+  height: 394px;
+  border-radius: 15px;
+  background-color: #F2F2F2;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+}
+
+.my-challenge-photo {
+  position: absolute;
+  top: 629px;
+  left: 393px;
+  width: 940px;
+  height: 620px;
+  border-radius: 15px;
+  background-color: #F2F2F2;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+}
