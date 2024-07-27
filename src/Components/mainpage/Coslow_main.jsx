@@ -7,7 +7,7 @@ function Coslow_main(){
 
   const navigate = useNavigate();
   const handleChallengeMainClick = () => {
-    navigate('/challenge');
+    navigate('/coslowchallenge_main');
   };
   const handleCoslowBannerClick = () => {
     navigate('/');

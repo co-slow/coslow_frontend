@@ -58,14 +58,14 @@
 .header-left {
   display: flex;
   align-items: center;
-  margin-left: 100px;
+  margin-left: 60px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
   gap: 100px;
-  margin-right: 100px;
+  margin-right: 70px;
 }
 
 .header-logo {

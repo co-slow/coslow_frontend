@@ -80,12 +80,12 @@ function Coslow_banner(){
     <div className="Coslow-container">
       <div className="Coslow-main">
       <div className={`main ${loginModalIsOpen || signupModalIsOpen ? 'modal-open' : ''}`}>
-        <div className="Coslow-header">
-          <div className="Coslow-header-layout">
-            <div className="header-left">
+        <div className="Coslow-header1">
+          <div className="Coslow-header-layout1">
+            <div className="header-left1">
               <div className="header-logo">CO-SLOW</div>
             </div>
-            <div className="header-right">
+            <div className="header-right1">
               <div className="header-challenge">챌린지</div>
               <div className="main-signIn-Up" onClick={openLoginModal}>로그인/회원가입</div>
             </div>

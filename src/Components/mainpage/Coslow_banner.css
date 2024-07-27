@@ -54,13 +54,13 @@ body {
   justify-content: space-between;
 }
 
-.Coslow-header {
+.Coslow-header1 {
   margin-top: 30px;
   position: relative; /* z-index를 적용하기 위해 position을 relative로 설정 */
   z-index: 2; 
 }
 
-.Coslow-header-layout {
+.Coslow-header-layout1 {
   width: 1218px;
   height: 80px;
   border-radius: 73px;
@@ -71,13 +71,13 @@ body {
   align-items: center; /* 내부 요소 수직 중앙 정렬 */
 }
 
-.header-left {
+.header-left1 {
   display: flex;
   align-items: center;
-  margin-left: 100px;
+  margin-left: 60px;
 }
 
-.header-right {
+.header-right1 {
   display: flex;
   align-items: center;
   gap: 80px; /* 오른쪽 항목들 사이의 간격 */

@@ -1,4 +1,4 @@
-import "./Challenge_main.css"
+import "./UserChallenge_main.css"
 import plus from './images/plus.png';
 import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
@@ -6,7 +6,7 @@ import { useState} from 'react';
 
 Modal.setAppElement('#root'); 
 
-function Challenge_main(){
+function UserChallenge_main(){
 
   const [makeChallengemodalIsOpen, setMakeChallengeModalIsOpen] = useState(false); // 모달 열림 상태를 관리하는 state
 
@@ -16,7 +16,7 @@ function Challenge_main(){
 
   const navigate = useNavigate();
   const handleChallengeMainClick = () => {
-    navigate('/challenge');
+    navigate('/userchallenge_main');
   };
   const handleCoslowBannerClick = () => {
     navigate('/');
@@ -93,4 +93,4 @@ function Challenge_main(){
   )
 }
 
-export default Challenge_main;
+export default UserChallenge_main;
