@@ -3,20 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // 캘린더 기본 스타일 추가
+import moment from 'moment';
 import './Record_main.css';
+import arrow2 from './images/Arrow 2.png';
+import img1 from './images/계란으로 하루 한끼 요리하기1.png'
+import img2 from './images/계란으로 하루 한끼 요리하기2.png'
+import img3 from './images/계란으로 하루 한끼 요리하기3.png'
+import img4 from './images/채소 듬뿍 일주일 챌린지.png'
+import img5 from './images/일주일에 두번 건강식 챌린지 1.png'
+import img6 from './images/일주일에 두번 건강식 챌린지 2.png'
+
 
 Modal.setAppElement('#root');
 
 function Record_main() {
-  const [makeChallengemodalIsOpen, setMakeChallengeModalIsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('전체');
   const [activeChallenge, setActiveChallenge] = useState('');
   const [activeOption, setActiveOption] = useState('');
   const [showChallengeOptions, setShowChallengeOptions] = useState(false);
-  const [date, setDate] = useState(new Date());
-
-  const openModal = () => setMakeChallengemodalIsOpen(true);
-  const closeModal = () => setMakeChallengeModalIsOpen(false);
+  const [value, onChange] = useState(new Date()); // 초기값은 현재 날짜
+  const [todayChallenges, setTodayChallenges] = useState([
+    '1계란으로 하루 한끼 요리하기',
+    '2계란으로 하루 한끼 요리하기'
+  ]); // 오늘 인증할 챌린지 예시
 
   const navigate = useNavigate();
 
@@ -42,6 +51,15 @@ function Record_main() {
   };
 
   const hasChallenge = false; // 예시: 참여한 챌린지가 없는 경우
+
+  const challengePhotos = [
+    { img: img1, title: '계란으로 하루 한끼 요리하기' },
+    { img: img2, title: '계란으로 하루 한끼 요리하기' },
+    { img: img3, title: '계란으로 하루 한끼 요리하기' },
+    { img: img4, title: '채소 듬뿍 일주일 챌린지' },
+    { img: img5, title: '일주일에 두번 건강식 챌린지' },
+    { img: img6, title: '일주일에 두번 건강식 챌린지' },
+  ];
 
   return (
     <div className="Record-container">
@@ -109,15 +127,40 @@ function Record_main() {
           <>
             <div className="calendar">
               <Calendar
-                onChange={setDate}
-                value={date}
+                onChange={onChange}
+                value={value} 
+                calendarType='gregory'
+                showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
+                formatDay={(locale, date) => moment(date).format("DD")}
+                formatMonthYear={(locale, date) => moment(date).format("MM월 YYYY")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
+                nextLabel=">"
+                prevLabel="<"
+                next2Label={null} // 년 버튼 비활성화
+                prev2Label={null}
               />
             </div>
-            <div className="today-challenge">
-              오늘 인증한 챌린지
+            <div className="today-challenges-container">
+              오늘 인증할 챌린지
+              <div>{todayChallenges.map((title, index) => (
+                <div key={index} className="today-challenge">
+                  <div className='today-challenge-title'>{title}</div>
+                  <div className='arrow2'><img src= {arrow2} alt="Arrow2"/></div>
+                </div>
+              ))}
+              </div>
             </div>
             <div className="my-challenge-photo">
-              나의 챌린지 사진
+              <div className='my-challenge-photo-title'>나의 챌린지 사진</div>
+              <div className="photo-grid">
+                {challengePhotos.map((challenge, index) => (
+                  <div key={index} className="photo-item">
+                    <div className="challenge-photo-img">
+                      <img src={challenge.img} alt={challenge.title} />
+                    </div>
+                    <div className="photo-title">{challenge.title}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </>
         )}
