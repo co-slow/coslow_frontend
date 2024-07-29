@@ -6,7 +6,7 @@
 }
 @font-face {
   font-family: 'Montserrat-Black';
-  src: url('./font/Montserrat-Black.ttf') format('truetype');
+  src: url('./fonts/Montserrat-Black.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
 }
