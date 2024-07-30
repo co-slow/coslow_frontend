@@ -9,9 +9,10 @@ import Coslow_main from './Components/mainpage/Coslow_main';
 import AddExplain from './Components/mainpage/AddExplain'
 import Footer from './Components/mainpage/Footer'
 import DietRecord_write from './Components/record/DietRecord_write';
-import FirstStep_detail from './Components/challenge/FirstStep_detail';
-import Egg_detail from './Components/challenge/Egg_detail';
-import FullVegetable_detail from './Components/challenge/FullVegetable_detail';
+// import FirstStep_detail from './Components/challenge/FirstStep_detail';
+// import Egg_detail from './Components/challenge/Egg_detail';
+// import FullVegetable_detail from './Components/challenge/FullVegetable_detail';
+import ChallengeDetail from './Components/challenge/ChallengeDetail';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -22,9 +23,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/userchallenge_main' element={<UserChallenge_main/>}/>
         <Route path='/coslowchallenge_main' element={<CoslowChallenge_main/>}/>
         <Route path='/DietRecord_write' element={<DietRecord_write/>}/>
-        <Route path='/FirstStep' element={<FirstStep_detail/>}/>
-        <Route path='/egg' element={<Egg_detail/>}/>
-        <Route path='/fullvegetable' element={<FullVegetable_detail/>}/>
+        {/* <Route path='challenge/:FirstStep' element={<FirstStep_detail/>}/>
+        <Route path='/challenge/:egg' element={<Egg_detail/>}/>
+        <Route path='/challenge/:fullvegetable' element={<FullVegetable_detail/>}/> */}
+        <Route path='/challenge/:challengeType' element={<ChallengeDetail/>}/>
       </Routes>
     </Router>
   </React.StrictMode>,

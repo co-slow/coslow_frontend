@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import saveicon from './images/save.png';
 import './CoslowChallenge_main.css';
-// import search from './images/search.png';
-
 
 function CoslowChallenge_main() {
   const [activeCategory, setActiveCategory] = useState('전체');
-  const [activeOption, setActiveOption] = useState('');
-  const [searchTerm, setSearchTerm] = useState(''); // 검색 상태 추가
+  const [activeOption, setActiveOption] = useState('코슬로 챌린지'); // 기본 옵션을 '코슬로 챌린지'로 설정
+  const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
 
@@ -27,15 +26,58 @@ function CoslowChallenge_main() {
     setActiveOption(option);
   };
 
-  // 검색 입력 핸들러
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  // 필터링된 카테고리 리스트
+  const handleChallengeClick = (title) => {
+    // 챌린지 제목에 따라 URL 경로를 맞춤
+    const challengeType = mapTitleToChallengeType(title);
+    navigate(`/challenge/${challengeType}`);
+  };
+
+  // 제목을 챌린지 유형으로 매핑하는 함수
+  const mapTitleToChallengeType = (title) => {
+    switch (title) {
+      case "계란으로<br/>하루 한끼 요리하기":
+        return 'egg';
+      case "코슬로와 함께하는<br/> 저속노화 첫걸음 챌린지":
+        return 'firststep';
+      case "채소 듬뿍 일주일 챌린지":
+        return 'fullvegetable';
+      // 더 많은 매핑 추가 가능
+      default:
+        return '';
+    }
+  };
+
   const categories = ['마감순', '인기순', '최신순'];
-  const filteredCategories = categories.filter(category =>
-    category.includes(searchTerm)
+  const challenges = [
+    {
+      title: "계란으로<br/>하루 한끼 요리하기",
+      startDate: "2024-08-01",
+      endDate: "2024-08-07",
+      type: '코슬로 챌린지'
+    },
+    {
+      title: "코슬로와 함께하는<br/> 저속노화 첫걸음 챌린지",
+      startDate: "2024-07-25",
+      endDate: "2024-08-05",
+      type: '코슬로 챌린지'
+    },
+    {
+      title: "채소 듬뿍 일주일 챌린지",
+      startDate: "2024-08-10",
+      endDate: "2024-08-20",
+      type: '코슬로 챌린지'
+    }
+  ];
+
+  const currentDate = new Date();
+
+  // 선택된 옵션에 따라 필터링된 챌린지 목록
+  const filteredChallenges = challenges.filter(challenge => 
+    challenge.type === activeOption
   );
 
   return (
@@ -56,18 +98,18 @@ function CoslowChallenge_main() {
         </div>
 
         <div className='challenge-header'>
+          <div className="search-wrapper">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+              placeholder=" " // placeholder 속성을 공백으로 설정
+            />
+            <div className="search-icon"></div>
+          </div>
           <div className="Order-category">
-            <div className="search-wrapper">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="search-input"
-                placeholder=" " // placeholder 속성을 공백으로 설정
-              />
-              <div className="search-icon"></div>
-            </div>
-            {filteredCategories.map((order_category) => (
+            {categories.map((order_category) => (
               <span
                 key={order_category}
                 className={activeCategory === order_category ? 'active' : ''}
@@ -89,6 +131,51 @@ function CoslowChallenge_main() {
               {option}
             </div>
           ))}
+        </div>
+
+        <div className="challenge-list">
+          {filteredChallenges.map((challenge) => {
+            const startDate = new Date(challenge.startDate);
+            const endDate = new Date(challenge.endDate);
+            let statusClass = '';
+            let statusText = '';
+
+            if (currentDate < startDate) {
+              const daysRemaining = Math.ceil((startDate - currentDate) / (1000 * 60 * 60 * 24));
+              statusClass = 'status-recruiting';
+              statusText = (
+                <>
+                  <div className="status-recruiting-text">모집중</div>
+                  <div className="status-days-remaining">D-{daysRemaining}</div>
+                </>
+              );
+            } else if (currentDate > endDate) {
+              statusClass = 'status-closed';
+              statusText = '종료';
+            } else {
+              statusClass = 'status-ongoing';
+              statusText = '진행중';
+            }
+
+            return (
+              <div 
+                key={challenge.title} 
+                className="challenge-box"
+                onClick={() => handleChallengeClick(challenge.title)} // 클릭 시 페이지 이동
+              >
+                <div 
+                  className="challenge-title" 
+                  dangerouslySetInnerHTML={{ __html: challenge.title }}
+                ></div>
+                <div className='save-icon'>
+                  <img src={saveicon} alt="save-icon" />
+                </div>
+                <div className={`challenge-status ${statusClass}`}>
+                  {statusText}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
