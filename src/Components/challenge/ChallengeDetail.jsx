@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import FirstStep_detail from './FirstStep_detail';
 import Egg_detail from './Egg_detail';
 import FullVegetable_detail from './FullVegetable_detail';
+import SaleSalad_detail from './SaleSalad_detail';
+import DasinShop_detail from './DasinShop_detail';
+import Greeting_detail from './Greeting_detain';
 
 function ChallengeDetail() {
   const { challengeType } = useParams();
@@ -18,6 +21,15 @@ function ChallengeDetail() {
         break;
       case 'fullvegetable':
         setDetailComponent(<FullVegetable_detail />);
+        break;
+      case 'SaleSalad':
+        setDetailComponent(<SaleSalad_detail />);
+        break;
+      case 'DasinShop':
+        setDetailComponent(<DasinShop_detail />);
+        break;
+      case 'Greeting':
+        setDetailComponent(<Greeting_detail />);
         break;
       default:
         setDetailComponent(<div>챌린지를 찾을 수 없습니다.</div>);

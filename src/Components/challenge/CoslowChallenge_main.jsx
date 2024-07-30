@@ -45,6 +45,12 @@ function CoslowChallenge_main() {
         return 'firststep';
       case "채소 듬뿍 일주일 챌린지":
         return 'fullvegetable';
+      case "‘샐러드판다’ <br/>샐러드 16종 한달 챌린지":
+        return 'SaleSalad';
+      case "‘다신샵’ <br/>닭가슴살 한달 챌린지":
+        return 'DasinShop'
+      case "‘그리팅’ <br/>저당플랜 5일 패키지 챌린지":
+        return 'Greeting'
       // 더 많은 매핑 추가 가능
       default:
         return '';
@@ -70,6 +76,24 @@ function CoslowChallenge_main() {
       startDate: "2024-08-10",
       endDate: "2024-08-20",
       type: '코슬로 챌린지'
+    },
+    {
+      title:"‘샐러드판다’ <br/>샐러드 16종 한달 챌린지",
+      startDate: "2024-08-01",
+      endDate: "2024-08-31",
+      type: '제휴 챌린지'
+    },
+    {
+      title:"‘다신샵’ <br/>닭가슴살 한달 챌린지",
+      startDate: "2024-08-01",
+      endDate: "2024-08-31",
+      type: '제휴 챌린지'
+    },
+    {
+      title:"‘그리팅’ <br/>저당플랜 5일 패키지 챌린지",
+      startDate: "2024-08-01",
+      endDate: "2024-08-05",
+      type: '제휴 챌린지'
     }
   ];
 
