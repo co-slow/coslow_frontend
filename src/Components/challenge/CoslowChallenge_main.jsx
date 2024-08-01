@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import saveicon from './images/save.png';
+import plus from './images/plus.png'; // 이미지 파일 import
 import './CoslowChallenge_main.css';
+import Modal from 'react-modal';
+
+// 모달의 루트 엘리먼트를 설정합니다.
+Modal.setAppElement('#root');
 
 function CoslowChallenge_main() {
   const [activeCategory, setActiveCategory] = useState('전체');
-  const [activeOption, setActiveOption] = useState('코슬로 챌린지'); // 기본 옵션을 '코슬로 챌린지'로 설정
+  const [activeOption, setActiveOption] = useState('코슬로 챌린지');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showImage, setShowImage] = useState(false); // 이미지 표시 여부 상태 추가
+  const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 열림 여부 상태 추가
 
   const navigate = useNavigate();
 
@@ -24,6 +31,12 @@ function CoslowChallenge_main() {
 
   const handleOptionClick = (option) => {
     setActiveOption(option);
+    if (option === '유저끼리 챌린지') {
+      setShowImage(true); // '유저끼리 챌린지' 클릭 시 이미지 표시
+    } else {
+      setShowImage(false); // 다른 옵션 클릭 시 이미지 숨기기
+      setModalIsOpen(false); // 다른 옵션 클릭 시 모달 닫기
+    }
   };
 
   const handleSearchChange = (event) => {
@@ -31,12 +44,14 @@ function CoslowChallenge_main() {
   };
 
   const handleChallengeClick = (title) => {
-    // 챌린지 제목에 따라 URL 경로를 맞춤
     const challengeType = mapTitleToChallengeType(title);
     navigate(`/challenge/${challengeType}`);
   };
 
-  // 제목을 챌린지 유형으로 매핑하는 함수
+  const handlePlusImageClick = () => {
+    setModalIsOpen(true);
+  };
+
   const mapTitleToChallengeType = (title) => {
     switch (title) {
       case "계란으로<br/>하루 한끼 요리하기":
@@ -48,10 +63,9 @@ function CoslowChallenge_main() {
       case "‘샐러드판다’ <br/>샐러드 16종 한달 챌린지":
         return 'SaleSalad';
       case "‘다신샵’ <br/>닭가슴살 한달 챌린지":
-        return 'DasinShop'
+        return 'DasinShop';
       case "‘그리팅’ <br/>저당플랜 5일 패키지 챌린지":
-        return 'Greeting'
-      // 더 많은 매핑 추가 가능
+        return 'Greeting';
       default:
         return '';
     }
@@ -99,7 +113,6 @@ function CoslowChallenge_main() {
 
   const currentDate = new Date();
 
-  // 선택된 옵션에 따라 필터링된 챌린지 목록
   const filteredChallenges = challenges.filter(challenge => 
     challenge.type === activeOption
   );
@@ -128,7 +141,7 @@ function CoslowChallenge_main() {
               value={searchTerm}
               onChange={handleSearchChange}
               className="search-input"
-              placeholder=" " // placeholder 속성을 공백으로 설정
+              placeholder=" "
             />
             <div className="search-icon"></div>
           </div>
@@ -156,6 +169,12 @@ function CoslowChallenge_main() {
             </div>
           ))}
         </div>
+
+        {showImage && (
+          <div className="plus-img" onClick={handlePlusImageClick}>
+            <img src={plus} alt="plus-challenge" />
+          </div>
+        )}
 
         <div className="challenge-list">
           {filteredChallenges.map((challenge) => {
@@ -185,7 +204,7 @@ function CoslowChallenge_main() {
               <div 
                 key={challenge.title} 
                 className="challenge-box"
-                onClick={() => handleChallengeClick(challenge.title)} // 클릭 시 페이지 이동
+                onClick={() => handleChallengeClick(challenge.title)}
               >
                 <div 
                   className="challenge-title" 
@@ -201,6 +220,71 @@ function CoslowChallenge_main() {
             );
           })}
         </div>
+
+        {/* 모달 컴포넌트 */}
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)} // 모달 외부 클릭 시 모달 닫기
+          contentLabel="챌린지 만들기" 
+          className="challengeModal"
+          overlayClassName="modal-overlay"
+        >
+          <div className="challengeModal-content">
+            <div className="modal-challenge">챌린지 만들기</div>
+            <div className="challengeModal-container">
+              <div className='modal-title-contents'>
+                <div>
+                  <label>
+                    <input type="text" className="title" placeholder="제목을 입력해주세요" required/>
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="text" className="hash-tag" placeholder="해시태그(최대 N개)" required/>
+                  </label>
+                </div>
+              </div>
+
+              <div className="challenge-term">
+                <div className="challenge-term-text">기간 정하기</div>
+                <div className="term-button">
+                  <button className="oneweek">1주</button>
+                  <button className="twoweek">2주</button>
+                  <button className="onemonth">1달</button>
+                  <button className="selfwrite">직접입력</button>
+                </div>
+                <div className="input-term">
+                  <label>
+                    <input type="text" name="start-date" placeholder="YYYY.MM.DD" required />
+                  </label>
+                  <span className="term-icon">-</span>
+                  <label>
+                    <input type="text" name="end-date" placeholder="YYYY.MM.DD" required/>
+                  </label>
+                </div>
+              </div>
+
+              <div className='certification-num-contents'>
+                <div className='certification-num-text'>인증 횟수(1주)</div>
+                <label>
+                  <input type="text" name="certification-num" placeholder="" required />
+                </label>
+                <span className="certification-num-2">회</span>
+              </div>
+              <div className='max-person-contents'>
+                <div className='max-person-text'>
+                  <div className='max-person-text-1'>최대 인원</div>
+                  <div className='max-person-text-2'>*최대 NN명까지 가능합니다.</div>
+                </div>
+                <label>
+                  <input type="text" name="max-person-num" placeholder="" required />
+                </label>
+                <span className="max-person-num-2">명</span>
+              </div>
+
+            </div>
+          </div>
+        </Modal>
       </div>
     </div>
   );

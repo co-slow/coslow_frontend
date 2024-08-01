@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'Pretendard-Medium';
   src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
-  font-weight: 400;
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -287,4 +287,208 @@
 .save-icon img{
   width: 30px;
   height: 30px;
+}
+
+.plus-img{
+  position:absolute;
+  display: flex;
+  bottom: 50px;
+  right: 30px;
+}
+
+.plus-img img{
+  width: 76px;
+  height: 76px;
+}
+
+/* 모달 오버레이 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* 충분히 높은 z-index 설정 */
+  pointer-events: auto; /* 클릭 이벤트를 수신할 수 있도록 설정 */
+}
+
+/* 모달 콘텐츠 스타일 */
+.challengeModal {
+  outline: none;
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 596px;
+  height: 740px;
+  border-radius: 60px;
+}
+
+.challengeModal-content{
+  margin:68px;
+}
+
+/* 모달 제목 스타일 */
+.modal-challenge {
+  font-size: 26px;
+  font-family: 'Pretendard-SemiBold';
+  font-size: 26px;
+  font-weight: 600;
+  color: #0F3A0E;
+  line-height: 31.03px;
+}
+
+/* 모달 내용 컨테이너 스타일 */
+.challengeModal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 입력 필드 스타일 */
+.modal-title-contents input[type="text"] {
+  padding: 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  background-color: #F2F2F2;
+  outline: none;
+  border: none;
+  width: 457px;
+  height: 60px;
+  border-radius: 14px;
+  color: #949799;
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+}
+
+input.title::placeholder,
+input.hash-tag::placeholder {
+  color: #949799;
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+}
+
+.challenge-term-text{
+  font-family: 'Pretendard-SemiBold';
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 23.87px;
+  text-align: left;
+  color:#0F3A0E;
+}  
+
+/* 버튼 스타일 */
+.term-button button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #EAEAEA;
+  width: 73px;
+  height: 41px;
+  border-radius: 45px;
+  font-size: 16px;
+  color: #949799;
+  outline: none;
+  font-family: 'Pretendard-Medium';
+
+}
+
+.term-button .selfwrite{
+  width: 97px;
+  height: 41px;
+}
+
+.term-button button:hover {
+  background-color: #93E032;
+  color: #FFFFFF;
+  outline: none;
+}
+
+/* 기본 입력 필드 스타일 */
+.input-term {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+
+
+.input-term input[type="text"] {
+  margin: 5px;
+  border-radius: 14px;
+  font-size: 20px;
+  outline: none;
+  border: none;
+  box-sizing: border-box;
+  background: #F2F2F2;
+  width: 208px;
+  height: 60px;
+}
+
+/* 플레이스홀더 스타일 */
+.input-term input[type="text"]::placeholder {
+  color: #949799;
+  font-family: 'Pretendard-Medium';
+  font-size: 20;
+}
+
+/* 아이콘 스타일 */
+.term-icon {
+  margin: 0 10px;
+  font-size: 22px;
+  font-family: 'Pretendard-Medium';
+  color: #989898;
+}
+
+
+/* 인증 횟수 및 최대 인원 스타일 */
+.certification-num-contents,
+.max-person-contents {
+  display: flex;
+  align-items: center;
+}
+
+.certification-num-text,
+.max-person-text {
+  width: 150px;
+  font-family: 'Pretendard-SemiBold';
+  font-size: 20px;
+  font-weight: 600;
+  color: #021E0F;
+}
+
+.certification-num-2,
+.max-person-num-2 {
+  margin-left: 10px;
+  font-family: 'Pretendard-SemiBold';
+  font-size: 20px;
+  font-weight: 600;
+  color: #021E0F;
+}
+
+/* 최대 인원 설명 텍스트 스타일 */
+.max-person-text-2 {
+  font-size: 14px;
+  color: #FF4040;
+  font-family: 'Pretendard-Medium';
+  width: 159px;
+}
+
+.certification-num-contents input[type="text"],
+.max-person-contents input[type="text"]  {
+  width: 150px;
+  height: 50px;
+  border-radius: 14px;
+  font-size: 20px;
+  background: #F2F2F2;
+  border: none;
+  outline: none;
+  margin-left: 50px;
+  font-family: 'Pretendard-Medium';
+  color: #989898;
 }

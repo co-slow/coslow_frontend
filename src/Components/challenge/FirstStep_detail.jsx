@@ -17,18 +17,6 @@ function FirstStep_detail() {
     endDate: "2024.08.10"
   });
 
-  // 참가자 수를 백엔드에서 가져옵니다.
-  // useEffect(() => {
-    // API 호출 예시 (현재는 상태 초기값으로 대체)
-    // axios.get('/api/participants')
-    //   .then(response => {
-    //     setParticipants(response.data.participantsCount);
-    //   })
-    //   .catch(error => {
-    //     console.log('참가자 수를 가져오는 중 오류 발생:', error);
-    //   });
-  // }, []);
-
   // '챌린지' 버튼 클릭 시 해당 경로로 이동합니다.
   const handleChallengeMainClick = () => {
     navigate('/coslowchallenge_main');

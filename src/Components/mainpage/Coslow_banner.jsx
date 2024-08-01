@@ -76,6 +76,12 @@ function Coslow_banner(){
     navigate('/afterlogin');
   };
 
+
+    const handleKakaoLogin = () => {
+      window.location.href = 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=5815a4975b35540b74e2ebbd27ed6902&redirect_uri=http://localhost:5173/loginredirect';
+    };
+
+
   return(
     <div className="Coslow-container">
       <div className="Coslow-main">
@@ -143,7 +149,7 @@ function Coslow_banner(){
             </div>
             <span className="or">또는</span>
             <div className="modal-login-footer2">
-              <button className="modal-login-button2">
+              <button className="modal-login-button2" onClick={handleKakaoLogin}>
                 <div className="kakao-img">
                   <img src={kakao} alt="kakao_image" />
                 </div>

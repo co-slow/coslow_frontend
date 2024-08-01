@@ -13,21 +13,10 @@ function Egg_detail() {
   // 챌린지 제목과 날짜를 상태로 관리합니다.
   const [challengeDetails] = useState({
     title: "계란으로 하루 한끼 요리하기",
+    description:"간단하면서도 영양 가득한 계란 요리로 건강을 챙겨봐요!\n다른 유저들의 다양한 계란 식단을 구경하며 레시피와 팁을 서로 공유해 보세요.\n함께 더욱 건강한 식습관을 만들어가는 재미를 느껴보세요!",
     startDate: "2024.08.01",
     endDate: "2024.08.07"
   });
-
-  // 참가자 수를 백엔드에서 가져옵니다.
-  // useEffect(() => {
-  //   API 호출 예시 (현재는 상태 초기값으로 대체)
-  //   axios.get('/api/participants')
-  //     .then(response => {
-  //       setParticipants(response.data.participantsCount);
-  //     })
-  //     .catch(error => {
-  //       console.log('참가자 수를 가져오는 중 오류 발생:', error);
-  //     });
-  // }, []);
 
   // '챌린지' 버튼 클릭 시 해당 경로로 이동합니다.
   const handleChallengeMainClick = () => {
@@ -82,9 +71,7 @@ function Egg_detail() {
           </div>
         </div>
         <div className="Egg-contents-detail">
-          <span>간단하면서도 영양 가득한 계란 요리로 건강을 챙겨봐요!
-          <br/>다른 유저들의 다양한 계란 식단을 구경하며 레시피와 팁을 서로 공유해 보세요.
-          <br/>함께 더욱 건강한 식습관을 만들어가는 재미를 느껴보세요!</span>
+          <span>{challengeDetails.description}</span>
         </div>
         <div className="Egg-attend-num">
           <span>지금까지 {participants}명이 참가했어요</span>
