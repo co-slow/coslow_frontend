@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import saveicon from './images/save.png';
 import plus from './images/plus.png'; // 이미지 파일 import
 import './CoslowChallenge_main.css';
 import Modal from 'react-modal';
+import axios from 'axios';
 
 // 모달의 루트 엘리먼트를 설정합니다.
 Modal.setAppElement('#root');
@@ -14,6 +15,43 @@ function CoslowChallenge_main() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showImage, setShowImage] = useState(false); // 이미지 표시 여부 상태 추가
   const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 열림 여부 상태 추가
+
+  const [challenges, setChallenges] = useState([]);
+  const [filteredChallenges, setFilteredChallenges] = useState([]);
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await axios.get('https://api.coslow.site/challenges', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setChallenges(response.data);
+      } catch (error) {
+        console.error('Failed to fetch challenges', error);
+      }
+    };
+
+    fetchChallenges();
+  }, []); // 데이터 가져오는 useEffect는 빈 배열로 초기화
+
+  useEffect(() => {
+    const filterChallenges = () => {
+      let filtered = [];
+      if (activeOption === '코슬로 챌린지') {
+        filtered = challenges.filter(challenge => challenge.createdBy === 'adminUser');
+      } else if (activeOption === '제휴 챌린지') {
+        filtered = challenges.filter(challenge => challenge.createdBy === 'pinUser');
+      } else if (activeOption === '유저끼리 챌린지') {
+        filtered = challenges.filter(challenge => !['adminUser', 'pinUser'].includes(challenge.createdBy));
+      }
+      setFilteredChallenges(filtered); // 필터링된 챌린지를 상태로 설정
+    };
+
+    filterChallenges();
+  }, [activeOption, challenges]); // activeOption과 challenges를 의존성 배열에 추가
 
   const navigate = useNavigate();
 
@@ -72,50 +110,6 @@ function CoslowChallenge_main() {
   };
 
   const categories = ['마감순', '인기순', '최신순'];
-  const challenges = [
-    {
-      title: "계란으로<br/>하루 한끼 요리하기",
-      startDate: "2024-08-01",
-      endDate: "2024-08-07",
-      type: '코슬로 챌린지'
-    },
-    {
-      title: "코슬로와 함께하는<br/> 저속노화 첫걸음 챌린지",
-      startDate: "2024-07-25",
-      endDate: "2024-08-05",
-      type: '코슬로 챌린지'
-    },
-    {
-      title: "채소 듬뿍 일주일 챌린지",
-      startDate: "2024-08-10",
-      endDate: "2024-08-20",
-      type: '코슬로 챌린지'
-    },
-    {
-      title:"‘샐러드판다’ <br/>샐러드 16종 한달 챌린지",
-      startDate: "2024-08-01",
-      endDate: "2024-08-31",
-      type: '제휴 챌린지'
-    },
-    {
-      title:"‘다신샵’ <br/>닭가슴살 한달 챌린지",
-      startDate: "2024-08-01",
-      endDate: "2024-08-31",
-      type: '제휴 챌린지'
-    },
-    {
-      title:"‘그리팅’ <br/>저당플랜 5일 패키지 챌린지",
-      startDate: "2024-08-01",
-      endDate: "2024-08-05",
-      type: '제휴 챌린지'
-    }
-  ];
-
-  const currentDate = new Date();
-
-  const filteredChallenges = challenges.filter(challenge => 
-    challenge.type === activeOption
-  );
 
   return (
     <div className="Challenge-container">
@@ -177,33 +171,31 @@ function CoslowChallenge_main() {
         )}
 
         <div className="challenge-list">
+        {console.log(filteredChallenges)}
           {filteredChallenges.map((challenge) => {
-            const startDate = new Date(challenge.startDate);
-            const endDate = new Date(challenge.endDate);
             let statusClass = '';
             let statusText = '';
 
-            if (currentDate < startDate) {
-              const daysRemaining = Math.ceil((startDate - currentDate) / (1000 * 60 * 60 * 24));
+            if (challenge.status === 'RECRUITING') {
               statusClass = 'status-recruiting';
               statusText = (
                 <>
                   <div className="status-recruiting-text">모집중</div>
-                  <div className="status-days-remaining">D-{daysRemaining}</div>
+                  <div className="status-days-remaining">{challenge.daysRemaining}</div>
                 </>
               );
-            } else if (currentDate > endDate) {
+            } else if (challenge.status === 'COMPLETED') {
               statusClass = 'status-closed';
               statusText = '종료';
-            } else {
+            } else if (challenge.status === 'PROCEEDING') {
               statusClass = 'status-ongoing';
               statusText = '진행중';
             }
 
             return (
               <div 
-                key={challenge.title} 
-                className="challenge-box"
+              key={`${challenge.participateFrequency}-${challenge.startDate}-${challenge.createdBy}`}
+              className="challenge-box"
                 onClick={() => handleChallengeClick(challenge.title)}
               >
                 <div 

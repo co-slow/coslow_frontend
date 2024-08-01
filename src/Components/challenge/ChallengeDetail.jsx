@@ -32,7 +32,6 @@ function ChallengeDetail() {
         setDetailComponent(<Greeting_detail />);
         break;
       default:
-        setDetailComponent(<div>챌린지를 찾을 수 없습니다.</div>);
         break;
     }
   }, [challengeType]);
