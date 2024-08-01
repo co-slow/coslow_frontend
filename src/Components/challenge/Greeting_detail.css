@@ -29,6 +29,10 @@
   font-style: normal;
 }
 
+.full-container4{
+  transform: translateY(350%);
+}
+
 .Greeting-container {
   position: absolute;
   top: 0;
@@ -48,7 +52,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start; /* 상단 정렬 */
 }
 
 .Coslow-header {
@@ -111,8 +115,8 @@
   width: 800px;
   height: 160px;
   margin-left: 218px; /* 오른쪽으로 이동 */
-  /* margin-bottom: -90px; */
-  margin-top: -160px;
+  position: relative;
+  bottom: 550px; /* 상단으로 이동 */
 }
 
 .Greeting-title span {
@@ -128,8 +132,8 @@
   width: 280px;
   height: 29px;
   margin-left: 10px; /* 오른쪽으로 이동 */
-  margin-top: 20px;
-}
+  position: relative;
+  margin-top: 30px; /* 상단으로 이동 */}
 
 .Greeting-term span {
   font-family: 'Pretendard-Medium';
@@ -144,8 +148,8 @@
   width: 630px;
   height: 56px;
   margin-left: 225px; /* 오른쪽으로 이동 */
-  margin-top: -140px;
-}
+  position: absolute;
+  bottom: 420px; /* 상단으로 이동 */}
 
 .Greeting-contents-detail span {
   font-family: 'Pretendard-Medium';
@@ -160,14 +164,13 @@
   width: 290px;
   height: 26px;
   margin-left: 225px; /* 오른쪽으로 이동 */
-  margin-bottom: 160px;
-}
+  position: relative;
+  bottom: 200px; /* 상단으로 이동 */}
 
 .Greeting-attend-num span {
   font-family: 'Pretendard';
   font-size: 22px;
   font-weight: 600;
-  line-height: 26.25px;
   text-align: left;
   color: #FFFFFF;
 }
@@ -175,8 +178,7 @@
 .Greeting-attend-button {
   width: 195px;
   height: 60px;
-  /* margin-left: 225px; 오른쪽으로 이동 */
-  margin-top: 20px;
+  margin-top: 30px; /* 상단으로 이동 (기존 값에서 조정) */
   padding: 18px 32px;
   border-radius: 15px;
   background: #3CB502;
@@ -184,6 +186,7 @@
   font-size: 20px;
   color: #FFFFFF;
   font-family: 'Pretendard-SemiBold';
+  position: relative;
 }
 
 .Greeting-attend-button:hover {
@@ -193,6 +196,7 @@
 .Greeting-attend-button:focus {
   outline: none;
 }
+
 
 
 .Greeting-img {

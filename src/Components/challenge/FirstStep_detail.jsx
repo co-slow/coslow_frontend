@@ -1,21 +1,59 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FirstStep_detail.css';
 import firststep from './images/firststep.png';
 import back from './images/back.png';
+import axios from 'axios';
+
 
 function FirstStep_detail() {
   const navigate = useNavigate();
   
   // 참가자 수를 상태로 관리합니다. 초기값은 0명입니다.
-  const [participants, setParticipants] = useState(0);
+  // const [participants, setParticipants] = useState(0);
 
-  // 챌린지 제목과 날짜를 상태로 관리합니다.
-  const [challengeDetails] = useState({
-    title: "코슬로와 함께하는\n저속노화 첫걸음 챌린지",
-    startDate: "2024.08.03",
-    endDate: "2024.08.10"
-  });
+  const [challenges, setChallenges] = useState([]);
+
+  const [filteredChallenge, setFilteredChallenge] = useState(null);
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await axios.get('https://api.coslow.site/challenges', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        // Authorization: 'Bearer ' + localStorage.getItem["accessToken"]
+        setChallenges(response.data);
+      } catch (error) {
+        console.error('Failed to fetch challenges', error);
+      }
+    };
+
+    fetchChallenges();
+  }, []);
+
+  useEffect(() => {
+    // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
+    if (challenges.length > 0) {
+      const challenge = challenges.find(challenge => challenge.title === '새로운 커스텀 챌린지');
+      setFilteredChallenge(challenge);
+    }
+  }, [challenges]);
+
+    // 줄바꿈 처리를 위한 함수
+    const formatTextWithLineBreaks = (text) => {
+      return text.split('\n').map((line, index) => (
+        <React.Fragment key={index}>
+          {line}<br />
+        </React.Fragment>
+      ));
+    };
+
 
   // '챌린지' 버튼 클릭 시 해당 경로로 이동합니다.
   const handleChallengeMainClick = () => {
@@ -33,9 +71,9 @@ function FirstStep_detail() {
   };
 
   // '챌린지 참가하기' 버튼 클릭 시 참가자 수를 1명 증가시킵니다.
-  const handleAttendButtonClick = () => {
-    setParticipants(prevCount => prevCount + 1);
-  };
+  // const handleAttendButtonClick = () => {
+  //   setParticipants(prevCount => prevCount + 1);
+  // };
 
   // '뒤로 가기' 버튼 클릭 시 이전 페이지로 이동합니다.
   const handleBackButtonClick = () => {
@@ -63,26 +101,29 @@ function FirstStep_detail() {
           <img src={back} alt="back_image" />
         </div>
 
-        <div className="firststep-title">
-          <span>{challengeDetails.title.split('\n').map((line, index) => (
-            <React.Fragment key={index}>
-              {line}<br />
-            </React.Fragment>
-          ))}</span>
-        </div>
-        <div className="firststep-term">
-          <span>{challengeDetails.startDate} - {challengeDetails.endDate}</span>
-        </div>
-        <div className="friststep-contents-detail">
-          <span>저속노화 식단이 아직 어색하고 어려운 입문자들은 주목!<br />코슬로와 함께 첫걸음 챌린지로 시작해봐요.</span>
-        </div>
-        <div className="firststep-attend-num">
-          <span>지금까지 {participants}명이 참가했어요</span>
-        </div>
-        <button className="firststep-attend-button" onClick={handleAttendButtonClick}>챌린지 참가하기</button>
-        <div className="firststep-img">
-          <img src={firststep} alt="firststep_image" />
-        </div>
+        {filteredChallenge ? (
+            <div className='full-container1'>
+              <div className="firststep-title">
+                <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>              
+                <div className="firststep-term">
+                  <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
+                </div>
+              </div>
+              <div className="firststep-contents-detail">
+                <span>{formatTextWithLineBreaks(filteredChallenge.description)}</span>
+              </div>
+              <div className="firststep-attend-num">
+                <span>지금까지 20명이 참가했어요</span>
+                {/* {filteredChallenge.어쩌고} */}
+                <button className="firststep-attend-button">챌린지 참가하기</button>
+              </div>
+              <div className="firststep-img">
+                <img src={firststep} alt="firststep_image" />
+              </div>
+            </div>
+          ) : (
+            <p>챌린지가 없습니다</p>
+          )}
       </div>
     </div>
   );

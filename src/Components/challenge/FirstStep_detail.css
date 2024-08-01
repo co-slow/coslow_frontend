@@ -28,6 +28,9 @@
   font-weight: 900;
   font-style: normal;
 }
+.full-container1{
+  transform: translateY(350%);
+}
 
 .FirstStep-container {
   position: absolute;
@@ -48,7 +51,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start; /* 상단 정렬 */
 }
 
 .Coslow-header {
@@ -108,28 +111,28 @@
 }
 
 .firststep-title {
-  width: 685px;
+  width: 800px;
   height: 160px;
-  margin-left: 220px; /* 오른쪽으로 이동 */
-  margin-bottom: -90px;
-  margin-top: -120px;
+  margin-left: 218px; /* 오른쪽으로 이동 */
+  position: relative;
+  bottom: 550px; /* 상단으로 이동 */
 }
 
 .firststep-title span {
-  font-family: 'Happiness Sans';
-  font-size: 64px;
+  font-family: 'Happiness-Sans-Bold';
+  font-size: 60px;
   font-weight: 900;
   line-height: 80px;
   text-align: left;
   color: #0F3A0E;
-  white-space: pre-line;
 }
 
 .firststep-term {
   width: 273px;
   height: 29px;
-  margin-left: 225px; /* 오른쪽으로 이동 */
-  margin-top: -80px;
+  margin-left: 10px; /* 오른쪽으로 이동 */
+  position: relative;
+  margin-top: 30px; /* 상단으로 이동 */
 }
 
 .firststep-term span {
@@ -141,18 +144,19 @@
   color: #0F3A0E;
 }
 
-.friststep-contents-detail {
-  width: 433px;
+.firststep-contents-detail {
+  width: 608px;
   height: 56px;
   margin-left: 225px; /* 오른쪽으로 이동 */
-  margin-top: -140px;
+  position: absolute;
+  bottom: 420px; /* 상단으로 이동 */
 }
 
-.friststep-contents-detail span {
+.firststep-contents-detail span {
   font-family: 'Pretendard-Medium';
   font-size: 20px;
   font-weight: 500;
-  line-height: 28px;
+  line-height: 30px;
   text-align: left;
   color: #0F3A0E;
 }
@@ -161,14 +165,14 @@
   width: 290px;
   height: 26px;
   margin-left: 225px; /* 오른쪽으로 이동 */
-  margin-bottom: -180px;
+  position: relative;
+  bottom: 200px; /* 상단으로 이동 */
 }
 
 .firststep-attend-num span {
-  font-family: 'Pretendard';
+  font-family: 'Pretendard-SemiBold';
   font-size: 22px;
   font-weight: 600;
-  line-height: 26.25px;
   text-align: left;
   color: #0F3A0E;
 }
@@ -176,14 +180,15 @@
 .firststep-attend-button {
   width: 195px;
   height: 60px;
-  margin-left: 225px; /* 오른쪽으로 이동 */
+  margin-top: 30px; /* 상단으로 이동 (기존 값에서 조정) */
   padding: 18px 32px;
   border-radius: 15px;
   background: #3CB502;
-  margin-bottom: 80px;
+  margin-bottom: 20px; /* 하단으로 이동 */
   font-size: 20px;
   color: #FFFFFF;
   font-family: 'Pretendard-SemiBold';
+  position: relative;
 }
 
 .firststep-attend-button:hover {

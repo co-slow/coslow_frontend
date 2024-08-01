@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SaleSalad_detail.css';
@@ -9,14 +10,48 @@ function SaleSalad_detail() {
   const navigate = useNavigate();
   
   // 참가자 수를 상태로 관리합니다. 초기값은 0명입니다.
-  const [participants, setParticipants] = useState(0);
+  // const [participants, setParticipants] = useState(0);
 
-  // 챌린지 제목과 날짜를 상태로 관리합니다.
-  const [challengeDetails] = useState({
-    title: "‘샐러드판다’\n샐러드 16종 한달 챌린지",
-    startDate: "2024.08.01",
-    endDate: "2024.08.31"
-  });
+  const [challenges, setChallenges] = useState([]);
+
+  const [filteredChallenge, setFilteredChallenge] = useState(null);
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await axios.get('https://api.coslow.site/challenges', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        // Authorization: 'Bearer ' + localStorage.getItem["accessToken"]
+        setChallenges(response.data);
+      } catch (error) {
+        console.error('Failed to fetch challenges', error);
+      }
+    };
+
+    fetchChallenges();
+  }, []);
+
+  useEffect(() => {
+    // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
+    if (challenges.length > 0) {
+      const challenge = challenges.find(challenge => challenge.title === '새로운 커스텀 챌린지');
+      setFilteredChallenge(challenge);
+    }
+  }, [challenges]);
+
+    // 줄바꿈 처리를 위한 함수
+    const formatTextWithLineBreaks = (text) => {
+      return text.split('\n').map((line, index) => (
+        <React.Fragment key={index}>
+          {line}<br />
+        </React.Fragment>
+      ));
+    };
 
 
   // '챌린지' 버튼 클릭 시 해당 경로로 이동합니다.
@@ -35,9 +70,9 @@ function SaleSalad_detail() {
   };
 
   // '챌린지 참가하기' 버튼 클릭 시 참가자 수를 1명 증가시킵니다.
-  const handleAttendButtonClick = () => {
-    setParticipants(prevCount => prevCount + 1);
-  };
+  // const handleAttendButtonClick = () => {
+  //   setParticipants(prevCount => prevCount + 1);
+  // };
 
   // '뒤로 가기' 버튼 클릭 시 이전 페이지로 이동합니다.
   const handleBackButtonClick = () => {
@@ -65,28 +100,29 @@ function SaleSalad_detail() {
           <img src={back} alt="back_image" />
         </div>
 
-        <div className="SaleSalad-title">
-        <span>{challengeDetails.title.split('\n').map((line, index) => (
-            <React.Fragment key={index}>
-              {line}<br />
-            </React.Fragment>
-          ))}</span>          
-          <div className="SaleSalad-term">
-            <span>{challengeDetails.startDate} - {challengeDetails.endDate}</span>
-          </div>
-        </div>
-        <div className="SaleSalad-contents-detail">
-          <span>샐러드판다와 함께하는 샐러드 16종 한달 챌린지에 참여해 보세요! 
-            <br/>한 달 동안 다양한 샐러드로 건강한 식단을 즐기며 영양 균형을 맞춰보세요. 
-            <br/>16가지 다양한 샐러드를 경험하고, 쿠폰팩까지 받아보세요!</span>
-        </div>
-        <div className="SaleSalad-attend-num">
-          <span>지금까지 {participants}명이 참가했어요</span>
-          <button className="SaleSalad-attend-button" onClick={handleAttendButtonClick}>챌린지 참가하기</button>
-        </div>
-        <div className="SaleSalad-img">
-          <img src={salesalad} alt="salesalad_image" />
-        </div>
+        {filteredChallenge ? (
+            <div className='full-container4'>
+              <div className="SaleSalad-title">
+                <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>              
+                <div className="SaleSalad-term">
+                  <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
+                </div>
+              </div>
+              <div className="SaleSalad-contents-detail">
+                <span>{formatTextWithLineBreaks(filteredChallenge.description)}</span>
+              </div>
+              <div className="SaleSalad-attend-num">
+                <span>지금까지 20명이 참가했어요</span>
+                {/* {filteredChallenge.어쩌고} */}
+                <button className="SaleSalad-attend-button">챌린지 참가하기</button>
+              </div>
+              <div className="SaleSalad-img">
+                <img src={salesalad} alt="SaleSalad_image" />
+              </div>
+            </div>
+          ) : (
+            <p>챌린지가 없습니다</p>
+          )}
       </div>
     </div>
   );

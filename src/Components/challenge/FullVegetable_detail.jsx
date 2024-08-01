@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import React from 'react';
 import './FullVegetable_detail.css';
 import fullvegetable from './images/fullvegetable.png';
 import back from './images/back.png';
@@ -7,26 +9,47 @@ import back from './images/back.png';
 function FullVegetable_detail() {
   const navigate = useNavigate();
   
-  // 참가자 수를 상태로 관리합니다. 초기값은 0명입니다.
+  const [challenges, setChallenges] = useState([]);
 
-  // 챌린지 제목과 날짜를 상태로 관리합니다.
-  const [challengeDetails] = useState({
-    title: "채소 듬뿍 일주일 챌린지",
-    startDate: "2024.08.01",
-    endDate: "2024.08.07"
-  });
+  const [filteredChallenge, setFilteredChallenge] = useState(null);
 
-  // 참가자 수를 백엔드에서 가져옵니다.
-  // useEffect(() => {
-    // API 호출 예시 (현재는 상태 초기값으로 대체)
-    // axios.get('/api/participants')
-    //   .then(response => {
-    //     setParticipants(response.data.participantsCount);
-    //   })
-    //   .catch(error => {
-    //     console.log('참가자 수를 가져오는 중 오류 발생:', error);
-    //   });
-  // }, []);
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await axios.get('https://api.coslow.site/challenges', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        // Authorization: 'Bearer ' + localStorage.getItem["accessToken"]
+        setChallenges(response.data);
+      } catch (error) {
+        console.error('Failed to fetch challenges', error);
+      }
+    };
+
+    fetchChallenges();
+  }, []);
+
+  useEffect(() => {
+    // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
+    if (challenges.length > 0) {
+      const challenge = challenges.find(challenge => challenge.title === '새로운 커스텀 챌린지');
+      setFilteredChallenge(challenge);
+    }
+  }, [challenges]);
+
+
+    // 줄바꿈 처리를 위한 함수
+    const formatTextWithLineBreaks = (text) => {
+      return text.split('\n').map((line, index) => (
+        <React.Fragment key={index}>
+          {line}<br />
+        </React.Fragment>
+      ));
+    };
 
   // '챌린지' 버튼 클릭 시 해당 경로로 이동합니다.
   const handleChallengeMainClick = () => {
@@ -72,24 +95,29 @@ function FullVegetable_detail() {
           <img src={back} alt="back_image" />
         </div>
 
-        <div className="fullvegetable-title">
-          <span>{challengeDetails.title}</span>
-          <div className="fullvegetable-term">
-            <span>{challengeDetails.startDate} - {challengeDetails.endDate}</span>
-          </div>
-        </div>
-        <div className="fullvegetable-contents-detail">
-          <span>신선하고 다양한 채소로 다채로운 식단을 구성해보세요!
-          <br/>다른 유저들의 식단도 구경하면서 레시피와 팁을 공유해 보세요.
-          <br/>함께 건강한 식습관을 만들어가는 즐거움을 느껴보세요!</span>
-        </div>
-        <div className="fullvegetable-attend-num">
-          <span>이미 종료된 챌린지예요!</span>
-          <button className="fullvegetable-attend-button">챌린지 둘러보기</button>
-        </div>
-        <div className="fullvegetable-img">
-          <img src={fullvegetable} alt="fullvegetable_image" />
-        </div>
+          {filteredChallenge ? (
+            <div className='full-container3'>
+              <div className="fullvegetable-title">
+                <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>                             
+                <div className="fullvegetable-term">
+                  <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
+                </div>
+              </div>
+              <div className="fullvegetable-contents-detail">
+                <span>{formatTextWithLineBreaks(filteredChallenge.description)}</span>
+              </div>
+              <div className="fullvegetable-attend-num">
+                <span>지금까지 20명이 참가했어요</span>
+                {/* {filteredChallenge.어쩌고} */}
+                <button className="fullvegetable-attend-button">챌린지 참가하기</button>
+              </div>
+              <div className="fullvegetable-img">
+                <img src={fullvegetable} alt="fullvegetable_image" />
+              </div>
+            </div>
+          ) : (
+            <p>챌린지가 없습니다</p>
+          )}
       </div>
     </div>
   );
