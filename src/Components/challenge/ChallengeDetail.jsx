@@ -5,7 +5,7 @@ import Egg_detail from './Egg_detail';
 import FullVegetable_detail from './FullVegetable_detail';
 import SaleSalad_detail from './SaleSalad_detail';
 import DasinShop_detail from './DasinShop_detail';
-import Greeting_detail from './Greeting_detain';
+import Greeting_detail from './Greeting_detail';
 
 function ChallengeDetail() {
   const { challengeType } = useParams();
@@ -32,6 +32,7 @@ function ChallengeDetail() {
         setDetailComponent(<Greeting_detail />);
         break;
       default:
+        setDetailComponent(<div>Challenge type not found</div>);
         break;
     }
   }, [challengeType]);

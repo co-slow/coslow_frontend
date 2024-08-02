@@ -6,7 +6,6 @@ import firststep from './images/firststep.png';
 import back from './images/back.png';
 import axios from 'axios';
 
-
 function FirstStep_detail() {
   const navigate = useNavigate();
   
@@ -38,9 +37,10 @@ function FirstStep_detail() {
   }, []);
 
   useEffect(() => {
-    // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
     if (challenges.length > 0) {
-      const challenge = challenges.find(challenge => challenge.title === '새로운 커스텀 챌린지');
+      console.log('Challenges before filtering:', challenges); // 데이터 확인
+      const challenge = challenges.find(challenge => challenge.title.trim() === '코슬로와 함께하는\n저속노화 첫걸음 챌린지');
+      console.log('Filtered challenge:', challenge); // 필터링 결과 확인
       setFilteredChallenge(challenge);
     }
   }, [challenges]);

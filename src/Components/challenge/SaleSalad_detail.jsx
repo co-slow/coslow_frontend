@@ -39,7 +39,7 @@ function SaleSalad_detail() {
   useEffect(() => {
     // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
     if (challenges.length > 0) {
-      const challenge = challenges.find(challenge => challenge.title === '새로운 커스텀 챌린지');
+      const challenge = challenges.find(challenge => challenge.title === "'샐러드판다’\n샐러드 16종 한달 챌린지");
       setFilteredChallenge(challenge);
     }
   }, [challenges]);

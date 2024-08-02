@@ -130,10 +130,7 @@ function CoslowChallenge_main() {
     setSearchTerm(event.target.value);
   };
 
-  const handleChallengeClick = (title) => {
-    const challengeType = mapTitleToChallengeType(title);
-    navigate(`/challenge/${challengeType}`);
-  };
+
 
   const handlePlusImageClick = () => {
     setModalIsOpen(true);
@@ -178,22 +175,37 @@ function CoslowChallenge_main() {
   };
 
   const mapTitleToChallengeType = (title) => {
-    switch (title) {
-      case "계란으로<br/>하루 한끼 요리하기":
+    const normalizedTitle = title.replace(/\n/g, '').trim(); // 줄바꿈과 공백 제거
+    switch (normalizedTitle) {
+      case "계란으로하루 한끼 요리하기":
         return 'egg';
-      case "코슬로와 함께하는<br/> 저속노화 첫걸음 챌린지":
+      case "코슬로와 함께하는저속노화 첫걸음 챌린지":
         return 'firststep';
       case "채소 듬뿍 일주일 챌린지":
         return 'fullvegetable';
-      case "‘샐러드판다’ <br/>샐러드 16종 한달 챌린지":
+      case "'샐러드판다’샐러드 16종 한달 챌린지":
         return 'SaleSalad';
-      case "‘다신샵’ <br/>닭가슴살 한달 챌린지":
+      case "‘다신샵’닭가슴살 한달 챌린지":
         return 'DasinShop';
-      case "‘그리팅’ <br/>저당플랜 5일 패키지 챌린지":
+      case "‘그리팅’저당플랜 5일 패키지 챌린지":
         return 'Greeting';
       default:
-        return '';
+        return null;
     }
+  };
+
+  const handleChallengeClick = (title) => {
+    const challengeType = mapTitleToChallengeType(title);
+    if (challengeType) {
+      navigate(`/challenge/${challengeType}`);
+    } else {
+      console.error('Invalid challenge type:', title);
+    }
+  };
+
+  // \n을 <br />로 변환하는 함수
+  const formatTitle = (title) => {
+    return title.replace(/\n/g, '<br />');
   };
 
   const categories = ['마감순', '인기순', '최신순'];
@@ -280,13 +292,13 @@ function CoslowChallenge_main() {
 
             return (
               <div 
-              key={`${challenge.id}`}
-              className="challenge-box"
+                key={`${challenge.id}`}
+                className="challenge-box"
                 onClick={() => handleChallengeClick(challenge.title)}
               >
                 <div 
                   className="challenge-title" 
-                  dangerouslySetInnerHTML={{ __html: challenge.title }}
+                  dangerouslySetInnerHTML={{ __html: formatTitle(challenge.title) }}
                 ></div>
                 <div className='save-icon'>
                   <img src={saveicon} alt="save-icon" />

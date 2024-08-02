@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Greeting_detail.css';
-import greeting from './images/greeting.png';
+import './FullVegetable_detail.css';
+import fullvegetable from './images/fullvegetable.png';
 import back from './images/back.png';
 
-function Greeting_detail() {
+function UserChallenge_detail() {
   const navigate = useNavigate();
   
-  // 참가자 수를 상태로 관리합니다. 초기값은 0명입니다.
-  // const [participants, setParticipants] = useState(0);
-
   const [challenges, setChallenges] = useState([]);
 
   const [filteredChallenge, setFilteredChallenge] = useState(null);
@@ -44,6 +41,7 @@ function Greeting_detail() {
     }
   }, [challenges]);
 
+
     // 줄바꿈 처리를 위한 함수
     const formatTextWithLineBreaks = (text) => {
       return text.split('\n').map((line, index) => (
@@ -52,7 +50,6 @@ function Greeting_detail() {
         </React.Fragment>
       ));
     };
-
 
   // '챌린지' 버튼 클릭 시 해당 경로로 이동합니다.
   const handleChallengeMainClick = () => {
@@ -70,9 +67,7 @@ function Greeting_detail() {
   };
 
   // '챌린지 참가하기' 버튼 클릭 시 참가자 수를 1명 증가시킵니다.
-  // const handleAttendButtonClick = () => {
-  //   setParticipants(prevCount => prevCount + 1);
-  // };
+
 
   // '뒤로 가기' 버튼 클릭 시 이전 페이지로 이동합니다.
   const handleBackButtonClick = () => {
@@ -80,7 +75,7 @@ function Greeting_detail() {
   };
 
   return (
-    <div className="Greeting-container">
+    <div className="fullvegetable-container">
       <div className="Coslow-main">
         <div className="Coslow-header">
           <div className="Coslow-header-layout">
@@ -100,24 +95,24 @@ function Greeting_detail() {
           <img src={back} alt="back_image" />
         </div>
 
-        {filteredChallenge ? (
-            <div className='full-container4'>
-              <div className="Greeting-title">
-                <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>              
-                <div className="Greeting-term">
+          {filteredChallenge ? (
+            <div className='full-container3'>
+              <div className="fullvegetable-title">
+                <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>                             
+                <div className="fullvegetable-term">
                   <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
                 </div>
               </div>
-              <div className="Greeting-contents-detail">
+              <div className="fullvegetable-contents-detail">
                 <span>{formatTextWithLineBreaks(filteredChallenge.description)}</span>
               </div>
-              <div className="Greeting-attend-num">
+              <div className="fullvegetable-attend-num">
                 <span>지금까지 20명이 참가했어요</span>
                 {/* {filteredChallenge.어쩌고} */}
-                <button className="Greeting-attend-button">챌린지 참가하기</button>
+                <button className="fullvegetable-attend-button">챌린지 참가하기</button>
               </div>
-              <div className="Greeting-img">
-                <img src={greeting} alt="Greeting_image" />
+              <div className="fullvegetable-img">
+                <img src={fullvegetable} alt="fullvegetable_image" />
               </div>
             </div>
           ) : (
@@ -128,4 +123,4 @@ function Greeting_detail() {
   );
 }
 
-export default Greeting_detail;
+export default UserChallenge_detail;
