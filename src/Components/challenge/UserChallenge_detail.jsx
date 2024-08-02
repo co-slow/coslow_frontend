@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'; // Import useParams
 import axios from 'axios';
 import React from 'react';
-import './FullVegetable_detail.css';
-import fullvegetable from './images/fullvegetable.png';
+import './UserChallenge_detail.css';
 import back from './images/back.png';
 
 function UserChallenge_detail() {
   const navigate = useNavigate();
-  
+  const { id } = useParams(); // Get the id from the URL parameters
   const [challenges, setChallenges] = useState([]);
-
   const [filteredChallenge, setFilteredChallenge] = useState(null);
 
   useEffect(() => {
@@ -22,8 +20,6 @@ function UserChallenge_detail() {
             Authorization: `Bearer ${token}`
           }
         });
-        
-        // Authorization: 'Bearer ' + localStorage.getItem["accessToken"]
         setChallenges(response.data);
       } catch (error) {
         console.error('Failed to fetch challenges', error);
@@ -34,48 +30,72 @@ function UserChallenge_detail() {
   }, []);
 
   useEffect(() => {
-    // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
     if (challenges.length > 0) {
-      const challenge = challenges.find(challenge => challenge.title === '새로운 커스텀 챌린지');
+      const challenge = challenges.find(challenge => challenge.id === parseInt(id, 10));
       setFilteredChallenge(challenge);
+      console.log("Filtered Challenge:", challenge); // 콘솔에 필터링된 챌린지 출력
     }
-  }, [challenges]);
+  }, [challenges, id]);
 
+  const formatTextWithLineBreaks = (text) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}<br />
+      </React.Fragment>
+    ));
+  };
 
-    // 줄바꿈 처리를 위한 함수
-    const formatTextWithLineBreaks = (text) => {
-      return text.split('\n').map((line, index) => (
-        <React.Fragment key={index}>
-          {line}<br />
-        </React.Fragment>
-      ));
-    };
+  // Participate frequency translation function
+  const getParticipateFrequencyText = (frequency) => {
+    switch (frequency) {
+      case 'ONE_WEEK':
+        return '1주';
+      case 'TWO_WEEKS':
+        return '2주';
+      case 'ONE_MONTH':
+        return '1달';
+      default:
+        return frequency; // Default case if the value doesn't match
+    }
+  };
 
-  // '챌린지' 버튼 클릭 시 해당 경로로 이동합니다.
   const handleChallengeMainClick = () => {
     navigate('/coslowchallenge_main');
   };
 
-  // '로그아웃' 버튼 클릭 시 홈 화면으로 이동합니다.
   const handleCoslowBannerClick = () => {
     navigate('/');
   };
 
-  // '나의 기록' 버튼 클릭 시 기록 작성 페이지로 이동합니다.
   const handleDietRecordWriteClick = () => {
     navigate('/DietRecord_write');
   };
 
-  // '챌린지 참가하기' 버튼 클릭 시 참가자 수를 1명 증가시킵니다.
-
-
-  // '뒤로 가기' 버튼 클릭 시 이전 페이지로 이동합니다.
   const handleBackButtonClick = () => {
     navigate(-1);
   };
 
+  // const handleChallengeApplyClick = async () => {
+  //   const userId = localStorage.getItem('userId'); // Assuming userId is stored in localStorage
+  //   if (filteredChallenge && userId) {
+  //     const challengeId = filteredChallenge.id;
+  //     try {
+  //       const response = await axios.post(`http://localhost:8080/challenges/${challengeId}/apply`, null, {
+  //         params: { userId: userId }
+  //       });
+  //       if (response.status === 200) {
+  //         console.log('신청 성공');
+  //       } else {
+  //         console.log('신청 실패');
+  //       }
+  //     } catch (error) {
+  //       console.error('신청 실패', error);
+  //     }
+  //   }
+  // };
+
   return (
-    <div className="fullvegetable-container">
+    <div className="userchallenge-container">
       <div className="Coslow-main">
         <div className="Coslow-header">
           <div className="Coslow-header-layout">
@@ -95,29 +115,56 @@ function UserChallenge_detail() {
           <img src={back} alt="back_image" />
         </div>
 
-          {filteredChallenge ? (
-            <div className='full-container3'>
-              <div className="fullvegetable-title">
-                <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>                             
-                <div className="fullvegetable-term">
-                  <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
-                </div>
+        {filteredChallenge ? (
+          <div className='filter-userchallenge-container'>
+            <div className="userchallenge-title">
+              <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>
+            </div>
+            <div className="userchallenge-term">
+                <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
+            </div>
+            <div className='userchallenge-hashTag'>
+              <span>{filteredChallenge.tags.join(',')}</span>
+            </div>
+            <div className='userchallenge-term-container'>
+              <span>이 챌린지는 </span>
+              <div className='userchallege-term-box'>
+                <span className="frequency-style">
+                  {filteredChallenge.participateFrequency === 'CUSTOM' ? (
+                    `${filteredChallenge.startDate} - ${filteredChallenge.endDate}`
+                  ) : (
+                    getParticipateFrequencyText(filteredChallenge.participateFrequency)
+                  )}
+                </span>
               </div>
-              <div className="fullvegetable-contents-detail">
-                <span>{formatTextWithLineBreaks(filteredChallenge.description)}</span>
-              </div>
-              <div className="fullvegetable-attend-num">
-                <span>지금까지 20명이 참가했어요</span>
-                {/* {filteredChallenge.어쩌고} */}
-                <button className="fullvegetable-attend-button">챌린지 참가하기</button>
-              </div>
-              <div className="fullvegetable-img">
-                <img src={fullvegetable} alt="fullvegetable_image" />
+              <span>동안 진행되는 챌린지예요.</span>
+            </div>
+            <div className='userCheck-num-container'>
+              <span>인증 횟수는</span>
+              <div className='userCheck-num-box'>
+                <span>{filteredChallenge.weeklyCheckInCount}회</span>
               </div>
             </div>
-          ) : (
-            <p>챌린지가 없습니다</p>
-          )}
+            <div className='user-maxPerson-container'>
+              <span>최대 인원은 </span>
+              <div className='user-maxPerson-box'>
+                <span>{filteredChallenge.maxParticipants}명</span>
+              </div>
+              <span> 이예요.</span>
+            </div>
+            <div className="userchallenge-attend-num">
+              <span>지금까지 n명이 참가했어요</span>
+              <button 
+                className="userchallenge-attend-submit-button"
+                // onClick={handleChallengeApplyClick}
+              >
+                챌린지 참가하기
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p>챌린지가 없습니다</p>
+        )}
       </div>
     </div>
   );

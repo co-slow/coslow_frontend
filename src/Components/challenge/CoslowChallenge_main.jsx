@@ -194,12 +194,16 @@ function CoslowChallenge_main() {
     }
   };
 
-  const handleChallengeClick = (title) => {
-    const challengeType = mapTitleToChallengeType(title);
-    if (challengeType) {
-      navigate(`/challenge/${challengeType}`);
+  const handleChallengeClick = (id,title) => {
+    if (activeOption === '유저끼리 챌린지') {
+      navigate(`/UserChallenge_detail/${id}`);
     } else {
-      console.error('Invalid challenge type:', title);
+      const challengeType = mapTitleToChallengeType(title);
+      if (challengeType) {
+        navigate(`/challenge/${challengeType}`);
+      } else {
+        console.error('Invalid challenge type:', title);
+      }
     }
   };
 
@@ -294,7 +298,7 @@ function CoslowChallenge_main() {
               <div 
                 key={`${challenge.id}`}
                 className="challenge-box"
-                onClick={() => handleChallengeClick(challenge.title)}
+                onClick={() => handleChallengeClick(challenge.id, challenge.title)}
               >
                 <div 
                   className="challenge-title" 

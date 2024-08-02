@@ -12,6 +12,7 @@ import DietRecord_write from './Components/record/DietRecord_write';
 // import Egg_detail from './Components/challenge/Egg_detail';
 // import FullVegetable_detail from './Components/challenge/FullVegetable_detail';
 import ChallengeDetail from './Components/challenge/ChallengeDetail';
+import UserChallenge_detail from './Components/challenge/UserChallenge_detail';
 import Loginredirect from './Components/mainpage/loginredirect';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/challenge/:egg' element={<Egg_detail/>}/>
         <Route path='/challenge/:fullvegetable' element={<FullVegetable_detail/>}/> */}
         <Route path='/challenge/:challengeType' element={<ChallengeDetail/>}/>
+        <Route path="/UserChallenge_detail/:id" element={<UserChallenge_detail />} /> 
       </Routes>
     </Router>
   </React.StrictMode>,
