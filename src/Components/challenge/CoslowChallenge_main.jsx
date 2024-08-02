@@ -19,6 +19,19 @@ function CoslowChallenge_main() {
   const [challenges, setChallenges] = useState([]);
   const [filteredChallenges, setFilteredChallenges] = useState([]);
 
+  // 모달 입력 상태 추가
+  const [title, setTitle] = useState('');
+  const [description] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [certificationNum, setCertificationNum] = useState('');
+  const [maxPersonNum, setMaxPersonNum] = useState('');
+  const [tags, setTags] = useState('');
+  const [isCustomTerm, setIsCustomTerm] = useState(false); // 기간 직접 입력 여부 상태 추가
+  const [selectedTerm, setSelectedTerm] = useState(''); // 선택된 기간 상태 추가
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchChallenges = async () => {
       const token = localStorage.getItem('accessToken');
@@ -35,7 +48,7 @@ function CoslowChallenge_main() {
     };
 
     fetchChallenges();
-  }, []); // 데이터 가져오는 useEffect는 빈 배열로 초기화
+  }, []);
 
   useEffect(() => {
     const filterChallenges = () => {
@@ -47,13 +60,49 @@ function CoslowChallenge_main() {
       } else if (activeOption === '유저끼리 챌린지') {
         filtered = challenges.filter(challenge => !['adminUser', 'pinUser'].includes(challenge.createdBy));
       }
-      setFilteredChallenges(filtered); // 필터링된 챌린지를 상태로 설정
+      setFilteredChallenges(filtered);
     };
 
     filterChallenges();
-  }, [activeOption, challenges]); // activeOption과 challenges를 의존성 배열에 추가
+  }, [activeOption, challenges]);
 
-  const navigate = useNavigate();
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}.${month}.${day}`;
+  };
+
+  const handleCustomTermClick = () => {
+    setIsCustomTerm(true);
+    setSelectedTerm('');
+  };
+
+  const handlePresetTermClick = (term) => {
+    const today = new Date();
+    const start = formatDate(today);
+    let end;
+
+    switch (term) {
+      case '1주':
+        end = formatDate(new Date(today.setDate(today.getDate() + 7)));
+        break;
+      case '2주':
+        end = formatDate(new Date(today.setDate(today.getDate() + 14)));
+        break;
+      case '1달':
+        end = formatDate(new Date(today.setMonth(today.getMonth() + 1)));
+        break;
+      default:
+        end = '';
+        break;
+    }
+
+    setStartDate(start);
+    setEndDate(end);
+    setIsCustomTerm(false);
+    setSelectedTerm(term);
+  };
 
   const handleRecordMainClick = () => {
     navigate('/record');
@@ -70,10 +119,10 @@ function CoslowChallenge_main() {
   const handleOptionClick = (option) => {
     setActiveOption(option);
     if (option === '유저끼리 챌린지') {
-      setShowImage(true); // '유저끼리 챌린지' 클릭 시 이미지 표시
+      setShowImage(true);
     } else {
-      setShowImage(false); // 다른 옵션 클릭 시 이미지 숨기기
-      setModalIsOpen(false); // 다른 옵션 클릭 시 모달 닫기
+      setShowImage(false);
+      setModalIsOpen(false);
     }
   };
 
@@ -88,6 +137,44 @@ function CoslowChallenge_main() {
 
   const handlePlusImageClick = () => {
     setModalIsOpen(true);
+  };
+
+  const handleSubmit = async () => {
+    const token = localStorage.getItem('accessToken');
+    const term = selectedTerm === '1주' ? 'ONE_WEEK' :
+                  selectedTerm === '2주' ? 'TWO_WEEKS' :
+                  selectedTerm === '1달' ? 'ONE_MONTH' : 'CUSTOM';
+
+    const data = {
+      title,
+      description,
+      startDate,
+      endDate,
+      participateFrequency: term,
+      maxParticipants: parseInt(maxPersonNum, 10),
+      weeklyCheckInCount: parseInt(certificationNum, 10),
+      tags: tags.split(',').map(tag => tag.trim()),
+      createdBy: '3', 
+      createDate: new Date().toISOString(),
+      lastModifiedDate: new Date().toISOString(),
+      daysRemaining: '', // 계산 후 추가할 수 있음
+      boardId: 3
+    };
+
+    console.log('제출할 데이터:', data);
+
+    try {
+      const response = await axios.post('https://api.coslow.site/challenges', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type': 'application/json'
+        }
+      });
+      console.log('성공:', response.data);
+      setModalIsOpen(false);
+    } catch (error) {
+      console.error('오류:', error);
+    }
   };
 
   const mapTitleToChallengeType = (title) => {
@@ -171,7 +258,6 @@ function CoslowChallenge_main() {
         )}
 
         <div className="challenge-list">
-        {console.log(filteredChallenges)}
           {filteredChallenges.map((challenge) => {
             let statusClass = '';
             let statusText = '';
@@ -194,7 +280,7 @@ function CoslowChallenge_main() {
 
             return (
               <div 
-              key={`${challenge.participateFrequency}-${challenge.startDate}-${challenge.createdBy}`}
+              key={`${challenge.id}`}
               className="challenge-box"
                 onClick={() => handleChallengeClick(challenge.title)}
               >
@@ -227,12 +313,26 @@ function CoslowChallenge_main() {
               <div className='modal-title-contents'>
                 <div>
                   <label>
-                    <input type="text" className="title" placeholder="제목을 입력해주세요" required/>
+                    <input 
+                      type="text" 
+                      className="title" 
+                      placeholder="제목을 입력해주세요" 
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
                   </label>
                 </div>
                 <div>
                   <label>
-                    <input type="text" className="hash-tag" placeholder="해시태그(최대 N개)" required/>
+                    <input 
+                      type="text" 
+                      className="hash-tag" 
+                      placeholder="해시태그(최대 N개)" 
+                      value={tags}
+                      onChange={(e) => setTags(e.target.value)}
+                      required
+                    />
                   </label>
                 </div>
               </div>
@@ -240,26 +340,69 @@ function CoslowChallenge_main() {
               <div className="challenge-term">
                 <div className="challenge-term-text">기간 정하기</div>
                 <div className="term-button">
-                  <button className="oneweek">1주</button>
-                  <button className="twoweek">2주</button>
-                  <button className="onemonth">1달</button>
-                  <button className="selfwrite">직접입력</button>
+                  <button
+                    className={`oneweek ${selectedTerm === '1주' ? 'active' : ''}`}
+                    onClick={() => handlePresetTermClick('1주')}
+                  >
+                    1주
+                  </button>
+                  <button
+                    className={`twoweek ${selectedTerm === '2주' ? 'active' : ''}`}
+                    onClick={() => handlePresetTermClick('2주')}
+                  >
+                    2주
+                  </button>
+                  <button
+                    className={`onemonth ${selectedTerm === '1달' ? 'active' : ''}`}
+                    onClick={() => handlePresetTermClick('1달')}
+                  >
+                    1달
+                  </button>
+                  <button
+                    className={`selfwrite ${isCustomTerm ? 'active' : ''}`}
+                    onClick={handleCustomTermClick}
+                  >
+                    직접입력
+                  </button>
                 </div>
-                <div className="input-term">
-                  <label>
-                    <input type="text" name="start-date" placeholder="YYYY.MM.DD" required />
-                  </label>
-                  <span className="term-icon">-</span>
-                  <label>
-                    <input type="text" name="end-date" placeholder="YYYY.MM.DD" required/>
-                  </label>
-                </div>
+                {isCustomTerm && (
+                  <div className="input-term">
+                    <label>
+                      <input 
+                        type="text" 
+                        name="start-date" 
+                        placeholder="YYYY.MM.DD" 
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        required
+                      />
+                    </label>
+                    <span className="term-icon">-</span>
+                    <label>
+                      <input 
+                        type="text" 
+                        name="end-date" 
+                        placeholder="YYYY.MM.DD" 
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        required
+                      />
+                    </label>
+                  </div>
+                )}
               </div>
 
               <div className='certification-num-contents'>
                 <div className='certification-num-text'>인증 횟수(1주)</div>
                 <label>
-                  <input type="text" name="certification-num" placeholder="" required />
+                  <input 
+                    type="text" 
+                    name="certification-num" 
+                    placeholder="" 
+                    value={certificationNum}
+                    onChange={(e) => setCertificationNum(e.target.value)}
+                    required 
+                  />
                 </label>
                 <span className="certification-num-2">회</span>
               </div>
@@ -269,11 +412,25 @@ function CoslowChallenge_main() {
                   <div className='max-person-text-2'>*최대 NN명까지 가능합니다.</div>
                 </div>
                 <label>
-                  <input type="text" name="max-person-num" placeholder="" required />
+                  <input 
+                    type="text" 
+                    name="max-person-num" 
+                    placeholder="" 
+                    value={maxPersonNum}
+                    onChange={(e) => setMaxPersonNum(e.target.value)}
+                    required 
+                  />
                 </label>
                 <span className="max-person-num-2">명</span>
               </div>
-
+              <div className='challenge-modal-submit-button'>
+                <button 
+                  className='make-challenge-button' 
+                  onClick={handleSubmit}
+                >
+                  만들기
+                </button>
+              </div>
             </div>
           </div>
         </Modal>

@@ -261,7 +261,7 @@
 
 .status-days-remaining {
   background: #FFBDD9;
-  width: 33px;
+  width: 40px;
   height: 22px;
 }
 
@@ -336,23 +336,26 @@
 .modal-challenge {
   font-size: 26px;
   font-family: 'Pretendard-SemiBold';
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
   color: #0F3A0E;
-  line-height: 31.03px;
+  display: flex;
+  justify-content: center;
+  line-height: 0px;
+  margin-bottom: 20px;
 }
 
 /* 모달 내용 컨테이너 스타일 */
 .challengeModal-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px;
 }
 
 /* 입력 필드 스타일 */
 .modal-title-contents input[type="text"] {
   padding: 10px;
-  margin-top: 5px;
+  margin-top: 30px;
   box-sizing: border-box;
   background-color: #F2F2F2;
   outline: none;
@@ -379,6 +382,7 @@ input.hash-tag::placeholder {
   line-height: 23.87px;
   text-align: left;
   color:#0F3A0E;
+  margin-bottom: 15px;
 }  
 
 /* 버튼 스타일 */
@@ -435,6 +439,7 @@ input.hash-tag::placeholder {
   color: #949799;
   font-family: 'Pretendard-Medium';
   font-size: 20;
+  text-align: center;
 }
 
 /* 아이콘 스타일 */
@@ -443,6 +448,12 @@ input.hash-tag::placeholder {
   font-size: 22px;
   font-family: 'Pretendard-Medium';
   color: #989898;
+}
+
+/* 선택된 버튼의 스타일 */
+.term-button button.active {
+  background-color: #93E032; /* 선택된 버튼 배경색 */
+  color: #FFFFFF;            /* 선택된 버튼 글자색 */
 }
 
 
@@ -460,6 +471,7 @@ input.hash-tag::placeholder {
   font-size: 20px;
   font-weight: 600;
   color: #021E0F;
+  margin-left: 10px;
 }
 
 .certification-num-2,
@@ -488,7 +500,8 @@ input.hash-tag::placeholder {
   background: #F2F2F2;
   border: none;
   outline: none;
-  margin-left: 50px;
+  margin-left: 120px;
   font-family: 'Pretendard-Medium';
   color: #989898;
 }
+
