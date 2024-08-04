@@ -56,9 +56,9 @@ function CoslowChallenge_main() {
       if (activeOption === '코슬로 챌린지') {
         filtered = challenges.filter(challenge => challenge.createdBy === 'adminUser');
       } else if (activeOption === '제휴 챌린지') {
-        filtered = challenges.filter(challenge => challenge.createdBy === 'pinUser');
+        filtered = challenges.filter(challenge => challenge.createdBy === 'ptnUser');
       } else if (activeOption === '유저끼리 챌린지') {
-        filtered = challenges.filter(challenge => !['adminUser', 'pinUser'].includes(challenge.createdBy));
+        filtered = challenges.filter(challenge => !['adminUser', 'ptnUser'].includes(challenge.createdBy));
       }
       setFilteredChallenges(filtered);
     };
@@ -152,6 +152,7 @@ function CoslowChallenge_main() {
       weeklyCheckInCount: parseInt(certificationNum, 10),
       tags: tags.split(',').map(tag => tag.trim()),
       createdBy: '3', 
+      // createdBy: parseInt(localStorage.getItem('id'), 10),
       createDate: new Date().toISOString(),
       lastModifiedDate: new Date().toISOString(),
       daysRemaining: '', // 계산 후 추가할 수 있음

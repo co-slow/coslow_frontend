@@ -496,7 +496,8 @@
   font-family: 'Pretendard-SemiBold';
   color: #3D4144; 
   font-weight: 600;
-  text-align: center;
+  width: 200PX;
+  margin-left: 270px;
   transform: translateY(30px);
 }
 
@@ -518,6 +519,8 @@
   margin-left: 30px;
   cursor: pointer;
 }
+
+
 
 .Pinmodal{
   outline: none;
