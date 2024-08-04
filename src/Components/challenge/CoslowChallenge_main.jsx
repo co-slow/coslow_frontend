@@ -151,7 +151,7 @@ function CoslowChallenge_main() {
       maxParticipants: parseInt(maxPersonNum, 10),
       weeklyCheckInCount: parseInt(certificationNum, 10),
       tags: tags.split(',').map(tag => tag.trim()),
-      createdBy: '3', 
+      createdby:'24',
       // createdBy: parseInt(localStorage.getItem('id'), 10),
       createDate: new Date().toISOString(),
       lastModifiedDate: new Date().toISOString(),
@@ -164,7 +164,7 @@ function CoslowChallenge_main() {
     try {
       const response = await axios.post('https://api.coslow.site/challenges', data, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           // 'Content-Type': 'application/json'
         }
       });

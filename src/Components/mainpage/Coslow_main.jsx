@@ -13,29 +13,6 @@ function Coslow_main() {
     navigate('/DietRecord_write');
   };
 
-  const handleLogoutClick = async () => {
-    const token = localStorage.getItem('accessToken'); // 액세스 토큰
-
-    try {
-      const response = await fetch('http://localhost:8080/oauth2/kakao/logout', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        // body: JSON.stringify({ token: 'your-token' }) if you need to send a token in the body
-      });
-
-      if (response.ok) {
-        navigate('/');
-      } else {
-        console.error('Logout failed');
-        // Handle logout failure
-      }
-    } catch (error) {
-      console.error('Error during logout:', error);
-      // Handle error during logout
-    }
-  };
 
   return (
     <div className="Coslow-container">
@@ -49,7 +26,7 @@ function Coslow_main() {
               <div className="header-challenge" onClick={handleChallengeMainClick}>챌린지</div>
               <div className="header-record" onClick={handleDietRecordWriteClick}>나의기록</div>
               <div className="header-mypage">마이페이지</div>
-              <div className="header-logout" onClick={handleLogoutClick}>로그아웃</div>
+              <div className="header-logout" >로그아웃</div>
             </div>
           </div>
         </div>

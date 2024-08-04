@@ -44,6 +44,37 @@ function SaleSalad_detail() {
     }
   }, [challenges]);
 
+//이거 제목으로 구별하는거 마다 추가해야함 
+  const handleChallengeApplyClick = async () => {
+    const token = localStorage.getItem('accessToken'); // 액세스 토큰
+  
+    if (filteredChallenge && token) {
+      const challengeId = filteredChallenge.id;
+      const challengeApplyUrl = `http://localhost:8080/challenges/${challengeId}/apply`; // URL 생성
+  
+      try {
+        // 참가 요청 보내기
+        const response = await axios.post(challengeApplyUrl, null, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // 로컬스토리지에서 가져온 토큰을 헤더에 추가
+          }
+        });
+  
+        if (response.status === 200) {
+          console.log('신청 성공');
+          // 참가자 수를 즉시 업데이트 (필요시)
+          // await fetchParticipantCount(challengeId, token);
+        } else {
+          console.log('신청 실패1', response.status);
+        }
+      } catch (error) {
+        console.error('신청 실패2', error);
+      }
+    }
+  };
+
+
     // 줄바꿈 처리를 위한 함수
     const formatTextWithLineBreaks = (text) => {
       return text.split('\n').map((line, index) => (
@@ -114,7 +145,7 @@ function SaleSalad_detail() {
               <div className="SaleSalad-attend-num">
                 <span>지금까지 20명이 참가했어요</span>
                 {/* {filteredChallenge.어쩌고} */}
-                <button className="SaleSalad-attend-button">챌린지 참가하기</button>
+                <button className="SaleSalad-attend-button" onClick={handleChallengeApplyClick}>챌린지 참가하기</button>
               </div>
               <div className="SaleSalad-img">
                 <img src={salesalad} alt="SaleSalad_image" />
