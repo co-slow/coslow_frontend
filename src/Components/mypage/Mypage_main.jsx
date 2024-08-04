@@ -84,15 +84,12 @@ function Mypage_main() {
           <div className="mypage-user">
             <div className="Mypage-user-container">
               <div className="mypage-profile-img">
-                <img src="프로필_이미지_URL" alt="Profile" />
+                <img src="http://k.kakaocdn.net/dn/btXtff/btsIllmM4PK/6uiYqFc3i0CA5czZBdwvXk/img_640x640.jpg" alt="Profile" />
               </div>
               <div className="mypage-user-info">
                 <div className="mypage-user-nickname">
                   <span>{localStorage.getItem('nickname')}</span>
                   <div className="mypage-nickname-text">님</div>
-                </div>
-                <div className="mypage-user-email">
-                  <span>kimlikelion@gmail.com</span>
                 </div>
               </div>
             </div>

@@ -180,6 +180,7 @@
 .mypage-user-nickname{
   display: flex;
   flex-direction: row;
+  margin-top: 20px;
 }
 
 .Mypage-user-container{
