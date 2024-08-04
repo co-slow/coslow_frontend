@@ -12,7 +12,7 @@ const Loginredirect = () => {
         console.log(code);
 
         // Make an Axios GET request to your backend with the code
-        const response = await axios.get(`http://localhost:8080/oauth2/kakao?code=${code}`);
+        const response = await axios.get(`http://localhost:8080/oauth2/code/kakao?code=${code}`);
 
         console.log(response.data); // Handle the response from the server as needed
         if(response.status==200){

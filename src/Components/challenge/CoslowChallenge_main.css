@@ -1,3 +1,4 @@
+
 @font-face {
   font-family: 'Pretendard-Medium';
   src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
@@ -500,4 +501,3 @@ input.hash-tag::placeholder {
   font-family: 'Pretendard-Medium';
   color: #989898;
 }
-

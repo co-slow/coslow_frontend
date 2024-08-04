@@ -35,6 +35,7 @@ function Mypage_main() {
 
   const openrankModal = () => {
     setrankModalIsOpen(true);
+    setpinModalIsOpen(false);
   };
 
   const closerankModal = () => {

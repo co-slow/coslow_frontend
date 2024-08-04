@@ -13,6 +13,7 @@ import Footer from './Components/mainpage/Footer'
 import Loginredirect from './Components/mainpage/loginredirect';
 import CoslowChallenge_main from './Components/challenge/CoslowChallenge_main';
 import ChallengeDetail from './Components/challenge/ChallengeDetail';
+import UserChallenge_detail from './Components/challenge/UserChallenge_detail';
 import Mypage_main from './Components/mypage/Mypage_main';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/recordWrite' element={<Record_write/>}/>
         <Route path='/coslowchallenge_main' element={<CoslowChallenge_main/>}/>
         <Route path='/challenge/:challengeType' element={<ChallengeDetail/>}/>
+        <Route path="/UserChallenge_detail/:id" element={<UserChallenge_detail />} /> 
         <Route path="/Mypage_main" element={<Mypage_main/>}/>
       </Routes>
     </Router>

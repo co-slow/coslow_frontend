@@ -7,7 +7,7 @@ import back from './images/back.png';
 
 function UserChallenge_detail() {
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the id from the URL parameters
+  const {id} = useParams(); // URL에서 ID를 가져옵니다
   const [challenges, setChallenges] = useState([]);
   const [filteredChallenge, setFilteredChallenge] = useState(null);
   const [participantCount, setParticipantCount] = useState(0); // 추가된 상태
@@ -23,6 +23,7 @@ function UserChallenge_detail() {
           }
         });
         setChallenges(response.data);
+        console.log('Fetched Challenges:', response.data); // 콘솔에 받아온 데이터 출력
       } catch (error) {
         console.error('Failed to fetch challenges', error);
       }
@@ -36,11 +37,14 @@ function UserChallenge_detail() {
     if (challenges.length > 0) {
       const challenge = challenges.find(challenge => challenge.id === parseInt(id, 10));
       setFilteredChallenge(challenge);
+      console.log('Filtered Challenge:', challenge); // 콘솔에 필터링된 데이터 출력
+
       if (challenge) {
         const fetchParticipantCount = async () => {
           try {
             const response = await axios.get(`http://localhost:8080/challenges/${challenge.id}/participants/count`);
             setParticipantCount(response.data.count); // 응답에서 참여 인원 수를 가져옴
+            console.log('Participant Count:', response.data.count); // 콘솔에 참가자 수 출력
           } catch (error) {
             console.error('Failed to fetch participant count', error);
           }
@@ -99,7 +103,7 @@ function UserChallenge_detail() {
 
       try {
         // 참가 요청 보내기
-        const response = await axios.post(challengeApplyUrl,null, {
+        const response = await axios.post(challengeApplyUrl, null, {
           headers: {
             Authorization: `Bearer ${token}`
           },
@@ -120,6 +124,7 @@ function UserChallenge_detail() {
                 }
               });
               setParticipantCount(countResponse.data.count); // 응답에서 참여 인원 수를 가져옴
+              console.log('Updated Participant Count:', countResponse.data.count); // 콘솔에 업데이트된 참가자 수 출력
             } catch (error) {
               console.error('Failed to fetch participant count', error);
             }
@@ -165,7 +170,7 @@ function UserChallenge_detail() {
                 <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
             </div>
             <div className='userchallenge-hashTag'>
-              <span>{filteredChallenge.tags.join(',')}</span>
+              <span>{filteredChallenge.tags.join(', ')}</span>
             </div>
             <div className='userchallenge-term-container'>
               <span>이 챌린지는 </span>
@@ -194,7 +199,7 @@ function UserChallenge_detail() {
               <span> 이예요.</span>
             </div>
             <div className="userchallenge-attend-num">
-              <span>지금까지 {participantCount}명이 참가했어요</span> {/* 수정된 부분 */}
+              <span>지금까지 {participantCount}명이 참가했어요</span>
               <button 
                 className="userchallenge-attend-submit-button"
                 onClick={handleChallengeApplyClick}
