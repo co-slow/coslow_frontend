@@ -14,6 +14,7 @@ import DietRecord_write from './Components/record/DietRecord_write';
 import ChallengeDetail from './Components/challenge/ChallengeDetail';
 import UserChallenge_detail from './Components/challenge/UserChallenge_detail';
 import Loginredirect from './Components/mainpage/loginredirect';
+import Mypage_main from './Components/mypage/Mypage_main';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/challenge/:fullvegetable' element={<FullVegetable_detail/>}/> */}
         <Route path='/challenge/:challengeType' element={<ChallengeDetail/>}/>
         <Route path="/UserChallenge_detail/:id" element={<UserChallenge_detail />} /> 
+        <Route path="/Mypage_main" element={<Mypage_main/>}/>
       </Routes>
     </Router>
   </React.StrictMode>,
