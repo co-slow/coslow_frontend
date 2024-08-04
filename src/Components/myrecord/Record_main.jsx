@@ -117,7 +117,7 @@ function Record_main() {
         </div>
         <div className='my-challenge-record-container'>
           <div className='my-challenge-options-container'>
-            <div className='my-challenge'>내가 참여한 챌린지
+            <div className='my-challenge1'>내가 참여한 챌린지
               <div className='my-challenge-options'>
                 {['코슬로 챌린지', '제휴 챌린지', '유저끼리 챌린지', '내가 만든 챌린지'].map((option) => (
                   <div
@@ -130,7 +130,7 @@ function Record_main() {
                 ))}
               </div>
             </div>
-            <div className='my-dietrecord' onClick={handlemyDietClick}>나의 식단 기록</div>
+            <div className='my-dietrecord1' onClick={handlemyDietClick}>나의 식단 기록</div>
           </div>
 
           <div className="challenge-list">

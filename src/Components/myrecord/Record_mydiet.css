@@ -69,11 +69,13 @@
     text-align: center;
   }
 
-  .my-challenge{
+  .my-challenge2{
+    color: #3D4144;
     cursor: pointer;
   }
   
-  .my-dietrecord{
+  .my-dietrecord2{
+    color: #3CB502;
     cursor: pointer;
     padding-top: 20px;
   }

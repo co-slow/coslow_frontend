@@ -47,8 +47,8 @@ function Record_mydiet() {
                 </div>
                 <div className='my-record-container'>
                     <div className='my-challenge-options-container'>
-                        <div className='my-challenge' onClick={handleRecordMainClick}>내가 참여한 챌린지</div>
-                        <div className='my-dietrecord' onClick={handlemyDietClick}>나의 식단 기록</div>
+                        <div className='my-challenge2' onClick={handleRecordMainClick}>내가 참여한 챌린지</div>
+                        <div className='my-dietrecord2' onClick={handlemyDietClick}>나의 식단 기록</div>
                     </div>  
                     <div className='mydiet-record-contents'>
                         <div className="calendar">
