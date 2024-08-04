@@ -10,6 +10,7 @@ function Egg_detail() {
   const navigate = useNavigate();
   
   const [challenges, setChallenges] = useState([]);
+  const [participantCount, setParticipantCount] = useState(0); // 참가자 수 상태 추가
 
   const [filteredChallenge, setFilteredChallenge] = useState(null);
 
@@ -38,8 +39,58 @@ function Egg_detail() {
     if (challenges.length > 0) {
       const challenge = challenges.find(challenge => challenge.title === '계란으로\n하루 한끼 요리하기');
       setFilteredChallenge(challenge);
+
+      if (challenge) {
+        fetchParticipantCount(challenge.id); // 참가자 수 가져오기
+      }
     }
   }, [challenges]);
+
+    // 참가자 수를 가져오는 함수
+    const fetchParticipantCount = async (challengeId) => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await axios.get(`http://localhost:8080/challenges/${challengeId}/participants/count`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setParticipantCount(response.data); // 응답에서 참여 인원 수를 가져옴
+        console.log('Participant Count:', response.data); // 콘솔에 참가자 수 출력
+      } catch (error) {
+        console.error('Failed to fetch participant count', error);
+      }
+    };
+  
+    const handleChallengeApplyClick = async () => {
+      const token = localStorage.getItem('accessToken'); // 액세스 토큰
+  
+      if (filteredChallenge && token) {
+        const challengeId = filteredChallenge.id;
+        const challengeApplyUrl = `http://localhost:8080/challenges/${challengeId}/apply`; // URL 생성
+  
+        try {
+          // 참가 요청 보내기
+          const response = await axios.post(challengeApplyUrl, {}, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` // 로컬스토리지에서 가져온 토큰을 헤더에 추가
+            }
+          });
+  
+          if (response.status === 200) {
+            console.log('신청 성공');
+            // 참가자 수를 즉시 업데이트
+            await fetchParticipantCount(challengeId);
+          } else {
+            console.log('신청 실패1', response.status);
+          }
+        } catch (error) {
+          console.error('신청 실패2', error);
+        }
+      }
+    };
+
 
     // 줄바꿈 처리를 위한 함수
     const formatTextWithLineBreaks = (text) => {
@@ -100,9 +151,9 @@ function Egg_detail() {
                 <span>{formatTextWithLineBreaks(filteredChallenge.description)}</span>
               </div>
               <div className="Egg-attend-num">
-                <span>지금까지 20명이 참가했어요</span>
+                <span>지금까지 {participantCount}명이 참가했어요</span>
                 {/* {filteredChallenge.어쩌고} */}
-                <button className="Egg-attend-button">챌린지 참가하기</button>
+                <button className="Egg-attend-button" onClick={handleChallengeApplyClick}>챌린지 참가하기</button>
               </div>
               <div className="egg-img">
                 <img src={egg} alt="Egg" />

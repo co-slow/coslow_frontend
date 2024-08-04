@@ -20,6 +20,7 @@ const Loginredirect = () => {
           localStorage['profileImg'] = response.data['profileImg']
           localStorage['nickname'] = response.data['nickname']
           localStorage['accessToken'] = response.data['accessToken']
+          localStorage['userId'] = response.data['userId']
 
           
           navigate('/afterlogin');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useId } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Record_main.css';
@@ -9,19 +9,17 @@ function Record_main() {
   const [activeCategory, setActiveCategory] = useState('전체');
   const [activeOption, setActiveOption] = useState('코슬로 챌린지');
   const [appliedChallenges, setAppliedChallenges] = useState([]);
-  const [filteredChallenges, setFilteredChallenges] = useState([]); // Add state for filtered challenges
+  const [filteredChallenges, setFilteredChallenges] = useState([]);
+
   const navigate = useNavigate();
   const [fetchError, setFetchError] = useState(false);
 
-
-  const [challenges, setChallenges] = useState([]);
   const boardIdMap = {
     '코슬로 챌린지': 1,
     '제휴 챌린지': 2,
     '유저끼리 챌린지': 3,
-    '내가 만든 챌린지': 4 // Assuming a boardId for '내가 만든 챌린지', modify as needed
+    '내가 만든 챌린지': 4,
   };
-
 
   useEffect(() => {
     const fetchChallenges = async () => {
@@ -30,8 +28,8 @@ function Record_main() {
       try {
         const response = await axios.get(`http://localhost:8080/challenges/user/${boardId}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setAppliedChallenges(response.data);
         setFetchError(false);
@@ -46,26 +44,38 @@ function Record_main() {
 
   useEffect(() => {
     const filterChallenges = () => {
-      let filtered = [];
+      let filtered = appliedChallenges;
+
+      // Filter by activeOption
       if (activeOption === '코슬로 챌린지') {
-        filtered = appliedChallenges.filter(challenge => challenge.createdBy === 'adminUser');
+        filtered = filtered.filter(challenge => challenge.createdBy === 'adminUser');
       } else if (activeOption === '제휴 챌린지') {
-        filtered = appliedChallenges.filter(challenge => challenge.createdBy === 'ptnUser');
+        filtered = filtered.filter(challenge => challenge.createdBy === 'ptnUser');
       } else if (activeOption === '유저끼리 챌린지') {
-        filtered = appliedChallenges.filter(challenge => !['adminUser', 'ptnUser'].includes(challenge.createdBy));
+        filtered = filtered.filter(challenge => !['adminUser', 'ptnUser'].includes(challenge.createdBy));
       } else if (activeOption === '내가 만든 챌린지') {
-        filtered = appliedChallenges.filter(challenge => challenge.createdBy === challenge.userId);
+        filtered = filtered.filter(challenge => challenge.createdBy === challenge.userId);
       }
+
+      // Filter by activeCategory
+      if (activeCategory === '모집중') {
+        filtered = filtered.filter(challenge => challenge.status === 'RECRUITING');
+      } else if (activeCategory === '진행중') {
+        filtered = filtered.filter(challenge => challenge.status === 'PROCEEDING');
+      } else if (activeCategory === '완료') {
+        filtered = filtered.filter(challenge => challenge.status === 'COMPLETED');
+      }
+
       setFilteredChallenges(filtered);
     };
 
     filterChallenges();
-  }, [activeOption, appliedChallenges, challenges.userId]);
+  }, [activeOption, activeCategory, appliedChallenges]);
 
   const handleRecordMainClick = () => {
     navigate('/record');
   };
-  
+
   const handleCoslowBannerClick = () => {
     navigate('/');
   };
@@ -86,6 +96,15 @@ function Record_main() {
     setActiveOption(option);
   };
 
+  const handleChallengeClick = (id, title) => {
+    // Navigate to challenge details or handle click
+  };
+
+  const formatTitle = (title) => {
+    // Implement your title formatting logic if needed
+    return title;
+  };
+
   return (
     <div className="Record-container">
       <div className="Coslow-main">
@@ -103,18 +122,18 @@ function Record_main() {
           </div>
         </div>
 
-       
         <div className="Record-category">
-            {['전체', '모집중', '진행중', '완료'].map((category) => (
-              <span
-                key={category}
-                className={activeCategory === category ? 'active' : ''}
-                onClick={() => handleCategoryClick(category)}
-              >
-                {category}
-              </span>
-            ))}
+          {['전체', '모집중', '진행중', '완료'].map((category) => (
+            <span
+              key={category}
+              className={activeCategory === category ? 'active' : ''}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </span>
+          ))}
         </div>
+
         <div className='my-challenge-record-container'>
           <div className='my-challenge-options-container'>
             <div className='my-challenge1'>내가 참여한 챌린지

@@ -151,11 +151,11 @@ function CoslowChallenge_main() {
       maxParticipants: parseInt(maxPersonNum, 10),
       weeklyCheckInCount: parseInt(certificationNum, 10),
       tags: tags.split(',').map(tag => tag.trim()),
-      createdBy: '3', 
+      createdBy:localStorage.getItem('userId'),
       // createdBy: parseInt(localStorage.getItem('id'), 10),
       createDate: new Date().toISOString(),
       lastModifiedDate: new Date().toISOString(),
-      daysRemaining: '', // 계산 후 추가할 수 있음
+      daysRemaining: ' ', // 계산 후 추가할 수 있음
       boardId: 3
     };
 
@@ -164,8 +164,8 @@ function CoslowChallenge_main() {
     try {
       const response = await axios.post('https://api.coslow.site/challenges', data, {
         headers: {
-          Authorization: `Bearer ${token}`,
-          // 'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
       console.log('성공:', response.data);
@@ -224,7 +224,7 @@ function CoslowChallenge_main() {
                 <div className="header-logo">CO-SLOW</div>
               </div>
               <div className="header-right">
-                <div className="header-challenge">챌린지</div>
+                <div className="header-challenge">챌린지</div>  
                 <div className="header-record" onClick={handleRecordMainClick}>나의기록</div>
                 <div className="header-mypage">마이페이지</div>
                 <div className="header-logout" onClick={handleCoslowBannerClick}>로그아웃</div>
