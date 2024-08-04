@@ -88,7 +88,7 @@ function Mypage_main() {
               </div>
               <div className="mypage-user-info">
                 <div className="mypage-user-nickname">
-                  <span>멋쟁이</span>
+                  <span>{localStorage.getItem('nickname')}</span>
                   <div className="mypage-nickname-text">님</div>
                 </div>
                 <div className="mypage-user-email">

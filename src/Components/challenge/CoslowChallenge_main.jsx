@@ -151,11 +151,11 @@ function CoslowChallenge_main() {
       maxParticipants: parseInt(maxPersonNum, 10),
       weeklyCheckInCount: parseInt(certificationNum, 10),
       tags: tags.split(',').map(tag => tag.trim()),
-      createdby:'24',
+      createdBy:localStorage.getItem('userId'),
       // createdBy: parseInt(localStorage.getItem('id'), 10),
       createDate: new Date().toISOString(),
       lastModifiedDate: new Date().toISOString(),
-      daysRemaining: '', // 계산 후 추가할 수 있음
+      daysRemaining: ' ', // 계산 후 추가할 수 있음
       boardId: 3
     };
 
@@ -165,7 +165,7 @@ function CoslowChallenge_main() {
       const response = await axios.post('https://api.coslow.site/challenges', data, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          // 'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         }
       });
       console.log('성공:', response.data);
