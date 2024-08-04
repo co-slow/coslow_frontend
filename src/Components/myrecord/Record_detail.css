@@ -6,7 +6,7 @@
   }
   @font-face {
     font-family: 'Montserrat-Black';
-    src: url('./fonts/Montserrat-Black.ttf') format('truetype');
+    src: url('./font/Montserrat-Black.ttf') format('truetype');
     font-weight: 900;
     font-style: normal;
   }
@@ -26,6 +26,7 @@
   .Record-Detail-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .Coslow-main {
@@ -39,6 +40,7 @@
 .Coslow-header {
     margin-top: 30px;
     position: relative;
+    z-index: 2;
 }
 
 .Coslow-header-layout {

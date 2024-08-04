@@ -6,7 +6,7 @@
 }
 @font-face {
   font-family: 'Montserrat-Black';
-  src: url('./fonts/Montserrat-Black.ttf') format('truetype');
+  src: url('./font/Montserrat-Black.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
 }
@@ -71,17 +71,18 @@ body {
   align-items: center; /* 내부 요소 수직 중앙 정렬 */
 }
 
+
 .header-left {
   display: flex;
   align-items: center;
-  margin-left: 100px;
+  margin-left: 60px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
   gap: 100px; /* 오른쪽 항목들 사이의 간격 */
-  margin-right: 100px;
+  margin-right: 70px;
 }
 
 .header-logo {

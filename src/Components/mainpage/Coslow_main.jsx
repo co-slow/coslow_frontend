@@ -6,11 +6,14 @@ import vegetable from './images/vegetable.png';
 function Coslow_main(){
 
   const navigate = useNavigate();
-  const handleRecordMainClick = () => {
-    navigate('/Record');
+  const handleChallengeMainClick = () => {
+    navigate('/coslowchallenge_main');
   };
   const handleCoslowBannerClick = () => {
     navigate('/');
+  };
+  const handleDietRecordWriteClick = () => {
+    navigate('/record');
   };
 
   return(
@@ -22,8 +25,8 @@ function Coslow_main(){
               <div className="header-logo">CO-SLOW</div>
             </div>
             <div className="header-right">
-              <div className="header-challenge">챌린지</div>
-              <div className="header-record" onClick={handleRecordMainClick}>나의기록</div>
+              <div className="header-challenge" onClick={handleChallengeMainClick}>챌린지</div>
+              <div className="header-record" onClick={handleDietRecordWriteClick}>나의기록</div>
               <div className="header-mypage">마이페이지</div>
               <div className="header-logout" onClick={handleCoslowBannerClick}>로그아웃</div>
             </div>
