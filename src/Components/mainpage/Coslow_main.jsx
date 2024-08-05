@@ -16,6 +16,10 @@ function Coslow_main(){
     navigate('/record');
   };
 
+  const handleMypageClick = () => {
+    navigate('/Mypage_main');
+  };
+
   return(
     <div className="Coslow-container">
       <div className="Coslow-main">
@@ -27,7 +31,7 @@ function Coslow_main(){
             <div className="header-right">
               <div className="header-challenge" onClick={handleChallengeMainClick}>챌린지</div>
               <div className="header-record" onClick={handleDietRecordWriteClick}>나의기록</div>
-              <div className="header-mypage">마이페이지</div>
+              <div className="header-mypage" onClick={handleMypageClick}>마이페이지</div>
               <div className="header-logout" onClick={handleCoslowBannerClick}>로그아웃</div>
             </div>
           </div>

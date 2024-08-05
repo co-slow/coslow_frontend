@@ -1,3 +1,4 @@
+
 @font-face {
   font-family: 'Pretendard-Medium';
   src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
@@ -22,12 +23,7 @@
   font-weight: 400;
   font-style: normal;
 }
-/* @font-face {
-  font-family: 'Happiness-Sans-Bold';
-  src: url('./font/Happiness-Sans-Bold.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-} */
+
 
 @font-face {
   font-family: 'Happiness-Sans-Bold';
@@ -139,6 +135,7 @@
   line-height: 80px;
   text-align: left;
   color: #0F3A0E;
+  width:200px
 }
 
 .userchallenge-term{
@@ -322,7 +319,7 @@
   margin-left: 218px;  
 }
 
-.userchallenge-attend-submit-button{
+.userchallenge-attend-submit-button, .userchallenge-browse-button {
   background-color: #3CB502;
   width: 180px;
   height: 60px;
@@ -332,9 +329,19 @@
   font-family: 'Pretendard-Medium';
   margin-left: 218px;  
   text-align: center;  
+  outline: none;
 }
 
 .userchallenge-attend-submit-button:hover{
   background-color: #49c012;
+  outline: none;
+}
+
+.userchallenge-browse-button{
+  background-color: #93E032;
+}
+
+.userchallenge-attend-submit-button:hover{
+  background-color: #44af13;
   outline: none;
 }
