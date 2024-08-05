@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import axios from 'axios';
 
 import "./Mypage_main.css";
 import rank from './images/rank.png';
@@ -22,47 +23,143 @@ import thinker from './images/thinker.png';
 import umsalad from './images/umsalad.png';
 
 import rank1 from './images/rank1.png';
-// import rank2 from './images/rank2.png';
-// import rank3 from './images/rank3.png';
-// import rank4 from './images/rank4.png';
-// import rank5 from './images/rank5.png';
+import rank2 from './images/rank2.png';
+import rank3 from './images/rank3.png';
+import rank4 from './images/rank4.png';
+import rank5 from './images/rank5.png';
 
 Modal.setAppElement('#root');
 
 function Mypage_main() {
-  const [rankModalIsOpen, setrankModalIsOpen] = useState(false);
-  const [pinModalIsOpen, setpinModalIsOpen] = useState(false);
+  const [rankModalIsOpen, setRankModalIsOpen] = useState(false);
+  const [ptnModalIsOpen, setPtnModalIsOpen] = useState(false);
+  const [userData, setUserData] = useState({
+    charLevel: 1, // Default to level 1
+    grade: '',
+    charPoint: 0,
+    challengeCount: 0
+  });
 
-  const openrankModal = () => {
-    setrankModalIsOpen(true);
-    setpinModalIsOpen(false);
+  // Define rank levels and thresholds
+  const rankLevels = {
+    1: '아기코북',
+    2: '멋진코북',
+    3: '똑똑한코북',
+    4: '용감한코북',
+    5: '전설의코북'
   };
 
-  const closerankModal = () => {
-    setrankModalIsOpen(false);
+  const rankThresholds = {
+    1: 10,
+    2: 30,
+    3: 50,
+    4: 100,
+    5: Infinity
   };
 
-  const openpinModal = () => {
-    setpinModalIsOpen(true);
-    setrankModalIsOpen(false);
+  const getRankClassName = (charLevel) => {
+    switch (charLevel) {
+      case 1:
+        return 'rank1-img';
+      case 2:
+        return 'rank2-img';
+      case 3:
+        return 'rank3-img';
+      case 4:
+        return 'rank4-img';
+      case 5:
+        return 'rank5-img';
+      default:
+        return '';
+    }
   };
 
-  const closepinModal = () => {
-    setpinModalIsOpen(false);
+  const getRankImage = (charLevel) => {
+    switch (charLevel) {
+      case 1:
+        return rank1;
+      case 2:
+        return rank2;
+      case 3:
+        return rank3;
+      case 4:
+        return rank4;
+      case 5:
+        return rank5;
+      default:
+        return null;
+    }
+  };
+
+  const getNextRank = (charLevel) => {
+    return rankLevels[charLevel + 1] || null;
+  };
+
+  const getProgressPercentage = (charLevel, challengeCount) => {
+    const nextRank = charLevel + 1;
+    const threshold = rankThresholds[nextRank] || Infinity;
+    return Math.min((challengeCount / threshold) * 100, 100);
+  };
+
+  const openRankModal = () => {
+    setRankModalIsOpen(true);
+    setPtnModalIsOpen(false);
+  };
+
+  const closeRankModal = () => {
+    setRankModalIsOpen(false);
+  };
+
+  const openPtnModal = () => {
+    setPtnModalIsOpen(true);
+    setRankModalIsOpen(false);
+  };
+
+  const closePtnModal = () => {
+    setPtnModalIsOpen(false);
   };
 
   useEffect(() => {
-    function updateProgressBar(percentage) {
-      const progressBarFill = document.querySelector('.progress-bar-fill');
-      if (progressBarFill) {
-        progressBarFill.style.width = percentage + '%';
-      } else {
-        console.error('Progress bar fill element not found');
-      }
-    }
+    const fetchData = async () => {
+      try {
+        // const userId = parseInt(localStorage.getItem('userId'), 10);
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get('http://localhost:8080/mypage', {
+          // params: { userId },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        console.log('가져온 데이터: ', response.data);
 
-    updateProgressBar(50);
+        const { charLevel: charLevel, charPoint, challengeCount } = response.data;
+        const currentLevel = parseInt(charLevel, 10); // Ensure it's an integer
+
+        setUserData({
+          charLevel: currentLevel,
+          charPoint,
+          challengeCount
+        });
+      } catch (error) {
+        console.error('데이터 가져오기 실패:', error);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    const percentage = getProgressPercentage(userData.charLevel, userData.challengeCount);
+    const progressBarFill = document.querySelector('.progress-bar-fill');
+    if (progressBarFill) {
+      progressBarFill.style.width = percentage + '%';
+    }
+  }, [userData.charLevel, userData.challengeCount]);
+
+  const rankImage = getRankImage(userData.charLevel);
+  const nextRank = getNextRank(userData.charLevel);
+  const progressPercentage = getProgressPercentage(userData.charLevel, userData.challengeCount);
 
   return (
     <div className="Mypage-main-container">
@@ -84,7 +181,7 @@ function Mypage_main() {
           <div className="mypage-user">
             <div className="Mypage-user-container">
               <div className="mypage-profile-img">
-                <img src="http://k.kakaocdn.net/dn/btXtff/btsIllmM4PK/6uiYqFc3i0CA5czZBdwvXk/img_640x640.jpg" alt="Profile" />
+                <img src={localStorage.getItem('profileImg')} alt="Profile" />
               </div>
               <div className="mypage-user-info">
                 <div className="mypage-user-nickname">
@@ -95,26 +192,26 @@ function Mypage_main() {
             </div>
 
             <div className="mypage-coslow-container">
-              <div className="mypage-rank-container" onClick={openrankModal}>
+              <div className="mypage-rank-container" onClick={openRankModal}>
                 <div className="rank-img">
                   <img src={rank} alt="rank_image" />
                 </div>
                 <div className="rank-text">나의 등급</div>
-                <span>아기코북</span>
+                <span>{rankLevels[userData.charLevel]}</span>
               </div>
-              <div className="mypage-reward-container" onClick={openpinModal}>
+              <div className="mypage-reward-container" onClick={openPtnModal}>
                 <div className="reward-img">
                   <img src={reward} alt="reward_image" />
                 </div>
                 <div className="reward-text">리워드</div>
-                <span>2,400</span>
+                <span>{userData.charPoint}</span>
               </div>
               <div className="mypage-challenge-attand-container">
                 <div className="attend-img">
                   <img src={attend} alt="attend_image" />
                 </div>
                 <div className="attend-text">챌린지 참여횟수</div>
-                <span>5회</span>
+                <span>{userData.challengeCount}</span>
               </div>
             </div>
 
@@ -144,56 +241,49 @@ function Mypage_main() {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
 
-          <div className="rank-character-container">
-            <div className="rank1-img">
-              <img src={rank1} alt="rank1_image" />
+          <div className="character-status">
+            <div className='char-container'>
+              <div className={`rank-image ${getRankClassName(userData.charLevel)}`}>
+                {rankImage ? (
+                  <img src={rankImage} alt="rank_image" />
+                ) : (
+                  <p>랭크 이미지가 없습니다.</p>
+                )}
+              </div>
             </div>
-            {/* <div className="rank2-img">
-              <img src={rank2} alt="rank2_image" />
-            </div>
-            <div className="rank3-img">
-              <img src={rank3} alt="rank3_image" />
-            </div>
-            <div className="rank4-img">
-              <img src={rank4} alt="rank4_image" />
-            </div>
-            <div className="rank5-img">
-              <img src={rank5} alt="rank5_image" />
-            </div> */}
             <div className="character-text">
-              <span>멋진코북이가 되기까지</span>
+              <span>{nextRank}이가 되기까지</span>
               <div className="percent-content">
-                <div className="percent">50%</div>
+                <div className="percent">{progressPercentage.toFixed(1)}%</div>
                 <span>남았어요!</span>
               </div>
             </div>
             <div className="character-progress-bar">
               <div className="progress-bar-background">
-                <div className="progress-bar-fill"></div>
+                <div className="progress-bar-fill" style={{ width: `${progressPercentage}%` }}></div>
               </div>
               <div className="progress-bar-text-container">
-                <div className="progress-bar-start-text">아기코북</div>
-                <div className="progress-bar-end-text">멋진코북</div>
+                <div className="progress-bar-start-text">{rankLevels[userData.charLevel]}</div>
+                <div className="progress-bar-end-text">{nextRank}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 모달 컴포넌트 */}
+      {/* Modals for Rank and Reward */}
       <Modal
         isOpen={rankModalIsOpen}
-        onRequestClose={closerankModal}
+        onRequestClose={closeRankModal}
         contentLabel="Rank Modal"
         className="Rankmodal"
         overlayClassName="overlay"
       >
         <div className='rankmodal-title'>등급표</div>
-        <div className='back-button' onClick={closerankModal}>
+        <div className='back-button' onClick={closeRankModal}>
           <img src={back} alt="back-img" />
         </div>
         <div className='ranking-img'>
@@ -202,20 +292,20 @@ function Mypage_main() {
       </Modal>
 
       <Modal
-        isOpen={pinModalIsOpen}
-        onRequestClose={closepinModal}
-        contentLabel="Pin Modal"
-        className="Pinmodal"
+        isOpen={ptnModalIsOpen}
+        onRequestClose={closePtnModal}
+        contentLabel="ptn Modal"
+        className="ptnmodal"
         overlayClassName="overlay"
       >
-        <div className='pinmodal-title'>리워드 사용가능한 제휴 브랜드</div>
-        <div className='back-button' onClick={closepinModal}>
+        <div className='ptnmodal-title'>리워드 사용가능한 제휴 브랜드</div>
+        <div className='back-button' onClick={closePtnModal}>
           <img src={back} alt="back-img" />
         </div>
-        <div className='pinmodal-subtitle'>
+        <div className='ptnmodal-subtitle'>
           총 <span>9</span>개의 제휴 브랜드가 있어요.
         </div>
-        <div className='pin-img'>
+        <div className='ptn-img'>
           <div className='bbaendak-img'>
             <a href="https://smartstore.naver.com/bbaendak/category" target="_blank" rel="noopener noreferrer">
               <img src={bbaendak} alt="bbaendak-img" />

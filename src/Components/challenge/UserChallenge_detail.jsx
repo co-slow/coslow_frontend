@@ -11,6 +11,8 @@ function UserChallenge_detail() {
   const [challenges, setChallenges] = useState([]);
   const [filteredChallenge, setFilteredChallenge] = useState(null);
   const [participantCount, setParticipantCount] = useState(0); // 참가자 수 상태 추가
+  const [setIsFull] = useState(false); // 최대 인원 도달 상태 추가
+  const [isExpired, setIsExpired] = useState(false); // 종료 상태 추가
 
   // 챌린지 목록을 가져오는 useEffect
   useEffect(() => {
@@ -35,14 +37,23 @@ function UserChallenge_detail() {
   useEffect(() => {
     if (challenges.length > 0) {
       const challenge = challenges.find(challenge => challenge.id === parseInt(id, 10));
-      setFilteredChallenge(challenge);
-      console.log('Filtered Challenge:', challenge); // 콘솔에 필터링된 데이터 출력
-
       if (challenge) {
+        const today = new Date();
+        const endDate = new Date(challenge.endDate);
+
+        // 종료 여부를 확인
+        setIsExpired(today > endDate);
+        setFilteredChallenge(challenge);
         fetchParticipantCount(challenge.id); // 참가자 수 가져오기
       }
     }
   }, [challenges, id]);
+
+  useEffect(() => {
+    if (isExpired) {
+      alert('이미 종료된 챌린지입니다.');
+    }
+  }, [isExpired]);
 
   // 참가자 수를 가져오는 함수
   const fetchParticipantCount = async (challengeId) => {
@@ -55,6 +66,13 @@ function UserChallenge_detail() {
       });
       setParticipantCount(response.data); // 응답에서 참여 인원 수를 가져옴
       console.log('Participant Count:', response.data); // 콘솔에 참가자 수 출력
+
+      // 최대 인원 도달 여부 확인
+      if (response.data >= (filteredChallenge ? filteredChallenge.maxParticipants : 0)) {
+        setIsFull(true);
+      } else {
+        setIsFull(false);
+      }
     } catch (error) {
       console.error('Failed to fetch participant count', error);
     }
@@ -87,6 +105,10 @@ function UserChallenge_detail() {
         console.error('신청 실패2', error);
       }
     }
+  };
+
+  const handleBrowseChallengeClick = () => {
+    navigate(-1); // 뒤로가기
   };
 
   const formatTextWithLineBreaks = (text) => {
@@ -147,56 +169,67 @@ function UserChallenge_detail() {
           <img src={back} alt="back_image" />
         </div>
 
-        {filteredChallenge ? (
-          <div className='filter-userchallenge-container'>
-            <div className="userchallenge-title">
-              <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>
-            </div>
-            <div className="userchallenge-term">
-              <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
-            </div>
-            <div className='userchallenge-hashTag'>
-              <span>{filteredChallenge.tags.join(', ')}</span>
-            </div>
-            <div className='userchallenge-term-container'>
-              <span>이 챌린지는 </span>
-              <div className='userchallege-term-box'>
-                <span className="frequency-style">
-                  {filteredChallenge.participateFrequency === 'CUSTOM' ? (
-                    `${filteredChallenge.startDate} - ${filteredChallenge.endDate}`
-                  ) : (
-                    getParticipateFrequencyText(filteredChallenge.participateFrequency)
-                  )}
-                </span>
+        <div className='filter-userchallenge-container'>
+          {filteredChallenge ? (
+            <>
+              <div className="userchallenge-title">
+                <span>{formatTextWithLineBreaks(filteredChallenge.title)}</span>
               </div>
-              <span>동안 진행되는 챌린지예요.</span>
-            </div>
-            <div className='userCheck-num-container'>
-              <span>인증 횟수는</span>
-              <div className='userCheck-num-box'>
-                <span>{filteredChallenge.weeklyCheckInCount}회</span>
+              <div className="userchallenge-term">
+                <span>{filteredChallenge.startDate} - {filteredChallenge.endDate}</span>
               </div>
-            </div>
-            <div className='user-maxPerson-container'>
-              <span>최대 인원은 </span>
-              <div className='user-maxPerson-box'>
-                <span>{filteredChallenge.maxParticipants}명</span>
+              <div className='userchallenge-hashTag'>
+                <span>{filteredChallenge.tags.join(', ')}</span>
               </div>
-              <span> 이예요.</span>
-            </div>
-            <div className="userchallenge-attend-num">
-              <span>지금까지 {participantCount}명이 참가했어요</span>
-              <button 
-                className="userchallenge-attend-submit-button"
-                onClick={handleChallengeApplyClick}
-              >
-                챌린지 참가하기
-              </button>
-            </div>
-          </div>
-        ) : (
-          <p>챌린지가 없습니다</p>
-        )}
+              <div className='userchallenge-term-container'>
+                <span>이 챌린지는 </span>
+                <div className='userchallege-term-box'>
+                  <span className="frequency-style">
+                    {filteredChallenge.participateFrequency === 'CUSTOM' ? (
+                      `${filteredChallenge.startDate} - ${filteredChallenge.endDate}`
+                    ) : (
+                      getParticipateFrequencyText(filteredChallenge.participateFrequency)
+                    )}
+                  </span>
+                </div>
+                <span>동안 진행되는 챌린지예요.</span>
+              </div>
+              <div className='userCheck-num-container'>
+                <span>인증 횟수는</span>
+                <div className='userCheck-num-box'>
+                  <span>{filteredChallenge.weeklyCheckInCount}회</span>
+                </div>
+              </div>
+              <div className='user-maxPerson-container'>
+                <span>최대 인원은 </span>
+                <div className='user-maxPerson-box'>
+                  <span>{filteredChallenge.maxParticipants}명</span>
+                </div>
+                <span> 이예요.</span>
+              </div>
+              <div className="userchallenge-attend-num">
+                <span>지금까지 {participantCount}명이 참가했어요</span>
+                {isExpired || participantCount >= filteredChallenge.maxParticipants ? (
+                  <button 
+                    className="userchallenge-browse-button"
+                    onClick={handleBrowseChallengeClick}
+                  >
+                    챌린지 둘러보기
+                  </button>
+                ) : (
+                  <button 
+                    className="userchallenge-attend-submit-button"
+                    onClick={handleChallengeApplyClick}
+                  >
+                    챌린지 참가하기
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </div>
   );

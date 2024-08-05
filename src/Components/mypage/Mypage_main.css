@@ -23,8 +23,8 @@
   font-style: normal;
 }
 @font-face {
-  font-family: 'Happiness-Sans-Bold';
-  src: url('./font/Happiness-Sans-Bold.ttf') format('truetype');
+  font-family: 'Happtness-Sans-Bold';
+  src: url('./font/Happtness-Sans-Bold.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
 }
@@ -363,8 +363,8 @@
   width: 295px;
   height: 323px;
 }
-.rank1-img {
-  margin-left: 60px;
+.char-container {
+  margin-left: 55px;
 }
 
 .rank-character-container{
@@ -372,7 +372,7 @@
   flex-direction: column;
   gap: 20px;
 }
-/* .rank2-img img{
+.rank2-img img{
   width: 275px;
   height: 351px;
 }
@@ -387,7 +387,7 @@
 .rank5-img img{
   width: 371px;
   height: 370px;
-} */
+}
 
 
 
@@ -523,7 +523,7 @@
 
 
 
-.Pinmodal{
+.ptnmodal{
   outline: none;
   position: relative;
   background: white;
@@ -534,7 +534,7 @@
   border-radius: 60px;
 }
 
-.pin-img {
+.ptn-img {
   display: grid;
   grid-template-columns: repeat(3,175px);
   grid-template-rows: repeat(3,95px);
@@ -546,18 +546,18 @@
   transform: translateX(-8px);
 }
 
-.pin-img img{
+.ptn-img img{
   width: 173px;
   height: 85px;
 }
 
-.pin-img div{
+.ptn-img div{
   justify-content: center;
   align-items: center;
   margin: 5px;
 }
 
-.pinmodal-title{
+.ptnmodal-title{
   font-family: 'Pretendard-SemiBold';
   font-size: 24px;
   font-weight: 600;
@@ -567,7 +567,7 @@
   margin-top: 40px;
 }
 
-.pinmodal-subtitle{
+.ptnmodal-subtitle{
   font-family: 'Pretendard-Medium';
   font-size: 20px;
   font-weight: 500;
@@ -578,6 +578,6 @@
   transform: translateY(20px);
 }
 
-.pinmodal-subtitle span{
+.ptnmodal-subtitle span{
   color: #3CB502;
 }

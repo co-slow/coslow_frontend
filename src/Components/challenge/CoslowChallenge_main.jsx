@@ -130,8 +130,6 @@ function CoslowChallenge_main() {
     setSearchTerm(event.target.value);
   };
 
-
-
   const handlePlusImageClick = () => {
     setModalIsOpen(true);
   };
@@ -151,8 +149,7 @@ function CoslowChallenge_main() {
       maxParticipants: parseInt(maxPersonNum, 10),
       weeklyCheckInCount: parseInt(certificationNum, 10),
       tags: tags.split(',').map(tag => tag.trim()),
-      createdBy:localStorage.getItem('userId'),
-      // createdBy: parseInt(localStorage.getItem('id'), 10),
+      createdBy: localStorage.getItem('userId'),
       createDate: new Date().toISOString(),
       lastModifiedDate: new Date().toISOString(),
       daysRemaining: ' ', // 계산 후 추가할 수 있음
@@ -174,6 +171,40 @@ function CoslowChallenge_main() {
       console.error('오류:', error);
     }
   };
+
+  //챌린지 저장
+const handleSaveIconClick = async (id) => {
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('accessToken');
+  
+  const data = {
+    challengeId: parseInt(id, 10),
+    userId: parseInt(userId, 10),
+  };
+
+  // 출력할 콘솔 로그 추가
+  console.log('클릭한 챌린지 ID:', id);
+  console.log('저장된 User ID:', userId);
+  console.log('저장된 Token:', token);
+  console.log('보내는 데이터:', data);
+
+  try {
+    const response = await axios.post('https://api.coslow.site/challenges/save', data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('챌린지 저장 성공:', response.data);
+  } catch (error) {
+    console.error('챌린지 저장 실패:', error);
+    console.error('오류 응답 데이터:', error.response ? error.response.data : 'No response data');
+    console.error('오류 상태:', error.response ? error.response.status : 'No response status');
+    console.error('오류 헤더:', error.response ? error.response.headers : 'No response headers');
+  }
+};
+
+  
 
   const mapTitleToChallengeType = (title) => {
     const normalizedTitle = title.replace(/\n/g, '').trim(); // 줄바꿈과 공백 제거
@@ -305,7 +336,7 @@ function CoslowChallenge_main() {
                   className="challenge-title" 
                   dangerouslySetInnerHTML={{ __html: formatTitle(challenge.title) }}
                 ></div>
-                <div className='save-icon'>
+                <div className='save-icon' onClick={(e) => { e.stopPropagation(); handleSaveIconClick(challenge.id); }}>
                   <img src={saveicon} alt="save-icon" />
                 </div>
                 <div className={`challenge-status ${statusClass}`}>
