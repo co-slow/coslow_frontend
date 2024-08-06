@@ -19,7 +19,7 @@ import Record_main from './Components/myrecord/Record_main';
 import Record_mydiet from './Components/myrecord/Record_mydiet';
 import Record_detail from './Components/myrecord/Record_detail';
 import Record_write from './Components/myrecord/Record_write';
-
+import Record_imageDetail from './Components/myrecord/Record_imageDetail';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -41,6 +41,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/recordmydiet' element={<Record_mydiet/>}/>
         <Route path='/recordDetail' element={<Record_detail/>}/>
         <Route path='/recordWrite' element={<Record_write/>}/>
+        <Route path='/recordPost' element={<Record_imageDetail/>}/>
+        
       </Routes>
     </Router>
   </React.StrictMode>,

@@ -66,14 +66,15 @@ function Record_write(){
             const body = {
               "dietTitle" : title,
               "description" : description,
-              "dietImg" : "https://coslow-imagebucket.s3.ap-northeast-2.amazonaws.com/" + filename
+              "dietImg" : "https://coslow-imagebucket.s3.ap-northeast-2.amazonaws.com/" + filename,
+              "challengeId" : 1
             }
             axios.post('https://api.coslow.site/diet/save', body, {
               headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
               }
             }).then((respose) =>{
-              console.log(response);
+              navigate('/recordPost');
             })
           })
         })

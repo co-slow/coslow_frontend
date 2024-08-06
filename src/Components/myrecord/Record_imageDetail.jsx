@@ -1,5 +1,6 @@
-// import React, { useState, useEffect } from 'react';
 import './Record_imageDetail.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import arrowLeftgray from './images/arrow_left_gray.png';
 import postMenu from './images/Kebab menu.png';
 import vectorLine from './images/VectorLine.png';
@@ -7,6 +8,12 @@ import like from './images/like default.png';
 
 
 function Record_imageDetail() {
+    const navigate = useNavigate();
+
+
+    const handleMovetoRecordDetailClick = () => {
+        navigate('/recordDetail');
+    };
 
     return (
         <div className="Record-imageDetail-container">
@@ -27,7 +34,7 @@ function Record_imageDetail() {
             </div>
             <div className="record-imageDetail-contents">
                 <div className='postButton'>
-                    <div className="arrowLeftIcon">
+                    <div className="arrowLeftIcon" onClick={handleMovetoRecordDetailClick}>
                         <img src={arrowLeftgray} alt="arrowLeftgray" />
                     </div>
                     <div className='postMenu'>
