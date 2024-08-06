@@ -123,7 +123,7 @@ function Mypage_main() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:8080/mypage', {
+        const response = await axios.get('https://api.coslow.site/mypage', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -137,7 +137,8 @@ function Mypage_main() {
         setUserData({
           charLevel: currentLevel,
           charPoint,
-          challengeCount
+          challengeCount,
+          realchallengeCount: challengeCount
         });
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);
@@ -149,17 +150,17 @@ function Mypage_main() {
 
   useEffect(() => {
     const updateLevel = () => {
-      const { charLevel, challengeCount } = userData;
+      const { charLevel, challengeCount} = userData;
       const nextLevel = charLevel + 1;
       if (challengeCount >= rankThresholds[charLevel] && charLevel < Object.keys(rankThresholds).length) {
         setUserData((prevData) => ({
           ...prevData,
           charLevel: nextLevel,
-          challengeCount: challengeCount - rankThresholds[charLevel] // Reset the challenge count for the new level
+          challengeCount: challengeCount - rankThresholds[charLevel], // Reset the challenge count for the new level  - rankThresholds[charLevel]
+          realchallengeCount:challengeCount
         }));
       }
     };
-
     updateLevel();
   }, [userData.challengeCount]);
 
@@ -225,7 +226,7 @@ function Mypage_main() {
                   <img src={attend} alt="attend_image" />
                 </div>
                 <div className="attend-text">챌린지 참여횟수</div>
-                <span>{userData.challengeCount}</span>
+                <span>{userData.realchallengeCount }</span>
               </div>
             </div>
 
