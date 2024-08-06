@@ -1,26 +1,20 @@
-import "./Coslow_main.css"
+import "./Coslow_main.css";
 import { useNavigate } from "react-router-dom";
 import vegetable from './images/vegetable.png';
 
-
-function Coslow_main(){
-
+function Coslow_main() {
   const navigate = useNavigate();
+
   const handleChallengeMainClick = () => {
     navigate('/coslowchallenge_main');
   };
-  const handleCoslowBannerClick = () => {
-    navigate('/');
-  };
+
   const handleDietRecordWriteClick = () => {
-    navigate('/record');
+    navigate('/DietRecord_write');
   };
 
-  const handleMypageClick = () => {
-    navigate('/Mypage_main');
-  };
 
-  return(
+  return (
     <div className="Coslow-container">
       <div className="Coslow-main">
         <div className="Coslow-header">
@@ -31,8 +25,8 @@ function Coslow_main(){
             <div className="header-right">
               <div className="header-challenge" onClick={handleChallengeMainClick}>챌린지</div>
               <div className="header-record" onClick={handleDietRecordWriteClick}>나의기록</div>
-              <div className="header-mypage" onClick={handleMypageClick}>마이페이지</div>
-              <div className="header-logout" onClick={handleCoslowBannerClick}>로그아웃</div>
+              <div className="header-mypage">마이페이지</div>
+              <div className="header-logout" >로그아웃</div>
             </div>
           </div>
         </div>
@@ -41,15 +35,15 @@ function Coslow_main(){
           <div className="main-challenge">CHALLENGE</div>
           <div className="main-contents-text">
             코슬로와 함께 다양한 사람들과
-            <br/>다채로운 저속노화 식단 챌린지에 도전해보세요!
+            <br />다채로운 저속노화 식단 챌린지에 도전해보세요!
           </div>
         </div>
         <div className="vegetable-img">
           <img src={vegetable} alt="vegetable_image" />
         </div>
       </div>
-      </div>
-  )
+    </div>
+  );
 }
 
 export default Coslow_main;

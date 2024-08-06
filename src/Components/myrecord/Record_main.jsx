@@ -25,12 +25,14 @@ function Record_main() {
     const fetchChallenges = async () => {
       const token = localStorage.getItem('accessToken');
       const boardId = boardIdMap[activeOption];
+      console.log(`Fetching challenges for boardId: ${boardId}`);
       try {
-        const response = await axios.get(`http://localhost:8080/challenges/user/${boardId}`, {
+        const response = await axios.get(`https://api.coslow.site/challenges/user/${boardId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log('Fetched challenges:', response.data);
         setAppliedChallenges(response.data);
         setFetchError(false);
       } catch (error) {
@@ -42,20 +44,10 @@ function Record_main() {
     fetchChallenges();
   }, [activeOption]);
 
+
   useEffect(() => {
     const filterChallenges = () => {
       let filtered = appliedChallenges;
-
-      // Filter by activeOption
-      if (activeOption === '코슬로 챌린지') {
-        filtered = filtered.filter(challenge => challenge.createdBy === 'adminUser');
-      } else if (activeOption === '제휴 챌린지') {
-        filtered = filtered.filter(challenge => challenge.createdBy === 'ptnUser');
-      } else if (activeOption === '유저끼리 챌린지') {
-        filtered = filtered.filter(challenge => !['adminUser', 'ptnUser'].includes(challenge.createdBy));
-      } else if (activeOption === '내가 만든 챌린지') {
-        filtered = filtered.filter(challenge => challenge.createdBy === challenge.userId);
-      }
 
       // Filter by activeCategory
       if (activeCategory === '모집중') {
@@ -66,11 +58,12 @@ function Record_main() {
         filtered = filtered.filter(challenge => challenge.status === 'COMPLETED');
       }
 
+      console.log(`Filtered challenges for ${activeOption} and ${activeCategory}:`, filtered);
       setFilteredChallenges(filtered);
     };
 
     filterChallenges();
-  }, [activeOption, activeCategory, appliedChallenges]);
+  }, [activeCategory, appliedChallenges]);
 
   const handleRecordMainClick = () => {
     navigate('/record');
@@ -96,8 +89,8 @@ function Record_main() {
     setActiveOption(option);
   };
 
-  const handleChallengeClick = (id, title) => {
-    // Navigate to challenge details or handle click
+  const handleChallengeClick = () => {
+    navigate('/recordDetail')
   };
 
   const formatTitle = (title) => {
@@ -107,7 +100,7 @@ function Record_main() {
 
   return (
     <div className="Record-container">
-      <div className="Coslow-main">
+      <div className="Record-Coslow-main">
         <div className="Coslow-header">
           <div className="Coslow-header-layout">
             <div className="header-left">

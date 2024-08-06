@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import './Record_imageDetail.css';
 import arrowLeftgray from './images/arrow_left_gray.png';
 import postMenu from './images/Kebab menu.png';

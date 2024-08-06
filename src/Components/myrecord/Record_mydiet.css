@@ -23,40 +23,84 @@
     font-style: normal;
   }
   
-  .myRecord-container{
+  .Diet-container{
+    position: relative;
+    width: 1536px;
+    height: 940px;
     display: flex;
-    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    box-sizing: border-box;
   }
-  
-  .Coslow-main {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-  }
-  
-  .Coslow-header {
-      margin-top: 30px;
-      position: relative;
-      z-index: 2;
-  }
-  
-  .Coslow-header-layout {
-      width: 1218px;
-      height: 80px;
-      border-radius: 73px;
-      background: #FFFFFF;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-  }
+
+.Diet-Coslow-main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column; 
+  justify-content: flex-start;
+  gap: 50px;
+  position: relative; /* 부모 요소에 position: relative 추가 */
+}
+
+.Coslow-header {
+  margin-top: 30px;
+  position: relative;
+}
+
+.Coslow-header-layout {
+  width: 1300px;
+  height: 80px;
+  border-radius: 73px;
+  background: #FFFFFF;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  margin-left: 80px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  margin-right: 80px;
+}
+
+.header-logo {
+  font-family: 'Montserrat-Black';
+  font-size: 24px;
+  font-weight: 900;
+  text-align: left;
+  color: #3CB402;
+}
+
+.header-challenge, .header-record, .header-mypage {
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+  line-height: 23.87px;
+  text-align: left;
+  cursor: pointer;
+  color: #0F3A0E;
+}
+
+.header-logout {
+  font-family: 'Pretendard-Medium';
+  font-size: 20px;
+  line-height: 23.87px;
+  text-align: left;
+  cursor: pointer;
+  color: #BCC2C6;
+}
 
   .my-record-container{
     display: flex;
-    padding-top: 150px;
+    padding-top: 100px;
     padding-left: 210px;
   }
 
@@ -82,8 +126,8 @@
   
   .mydiet-record-contents {
     display: flex;
-    width: 960px;
-    gap: 40px;
+    width: 930px;
+    gap: 20px;
     align-items: center;
     flex-wrap: wrap;
   }

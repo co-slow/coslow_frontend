@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Record_detail.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';

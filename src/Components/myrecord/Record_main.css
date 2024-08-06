@@ -24,17 +24,21 @@
 }
 
 .Record-container{
+  position: relative;
+  width: 1536px;
+  height: 940px;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  box-sizing: border-box;
 }
 
-.Coslow-main {
+.Record-Coslow-main {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .Coslow-header {
@@ -56,7 +60,7 @@
 
 .Record-category {
   position: relative;
-  padding-top: 70px;
+  padding-top: 50px;
   padding-left: 100px;
   width: 650px;
   display: flex;

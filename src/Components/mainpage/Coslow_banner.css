@@ -23,6 +23,15 @@
   font-style: normal;
 }
 
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff; /* 전체 화면 배경색 설정 */
+}
+
+
 .Coslow-container {
   position: absolute;
   top: 0;
@@ -166,7 +175,7 @@
 }
 
 .modal1 {
-  height: 350px;
+  height: 300px;
 }
 
 .modal2 {

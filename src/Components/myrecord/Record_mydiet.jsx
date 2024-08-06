@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import moment from 'moment';
-import axios from 'axios';
+// import axios from 'axios';
 import './Record_mydiet.css';
 import 'react-calendar/dist/Calendar.css'; // 캘린더 기본 스타일 추가
 
@@ -10,7 +10,7 @@ function Record_mydiet() {
     const [value, onChange] = useState(new Date());
     const navigate = useNavigate();
 
-    const [challenges, setChallenges] = useState([]);
+    // const [challenges, setChallenges] = useState([]);
 
 
     const handleRecordMainClick = () => {
@@ -27,11 +27,11 @@ function Record_mydiet() {
 
     const handlemyDietClick = () => {
         navigate('/recordmydiet');
-      };
+    };
 
     return (
-        <div className="myRecord-container">
-            <div className="Coslow-main">
+        <div className="Diet-container">
+            <div className="Diet-Coslow-main">
                 <div className="Coslow-header">
                     <div className="Coslow-header-layout">
                         <div className="header-left">

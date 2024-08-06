@@ -128,6 +128,39 @@ function Greeting_detail() {
     navigate(-1);
   };
 
+  
+    //챌린지 저장
+const handleSaveIconClick = async (id) => {
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('accessToken');
+  
+  const data = {
+    challengeId: parseInt(id, 10),
+    userId: parseInt(userId, 10),
+  };
+
+  // 출력할 콘솔 로그 추가
+  console.log('클릭한 챌린지 ID:', id);
+  console.log('저장된 User ID:', userId);
+  console.log('저장된 Token:', token);
+  console.log('보내는 데이터:', data);
+
+  try {
+    const response = await axios.post('http://localhost:8080/challenges/save', data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('챌린지 저장 성공:', response.data);
+  } catch (error) {
+    console.error('챌린지 저장 실패:', error);
+    console.error('오류 응답 데이터:', error.response ? error.response.data : 'No response data');
+    console.error('오류 상태:', error.response ? error.response.status : 'No response status');
+    console.error('오류 헤더:', error.response ? error.response.headers : 'No response headers');
+  }
+};
+
   return (
     <div className="Greeting-container">
       <div className="Coslow-main">
@@ -165,7 +198,7 @@ function Greeting_detail() {
                 {/* {filteredChallenge.어쩌고} */}
                 <button className="Greeting-attend-button" onClick={handleChallengeApplyClick}>챌린지 참가하기</button>
               </div>
-              <div className="Greeting-img">
+              <div className="Greeting-img" onClick={(e) => { e.stopPropagation(); handleSaveIconClick(challenges.id); }}>
                 <img src={greeting} alt="Greeting_image" />
               </div>
             </div>

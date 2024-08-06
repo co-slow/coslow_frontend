@@ -130,8 +130,6 @@ function CoslowChallenge_main() {
     setSearchTerm(event.target.value);
   };
 
-
-
   const handlePlusImageClick = () => {
     setModalIsOpen(true);
   };
@@ -151,8 +149,7 @@ function CoslowChallenge_main() {
       maxParticipants: parseInt(maxPersonNum, 10),
       weeklyCheckInCount: parseInt(certificationNum, 10),
       tags: tags.split(',').map(tag => tag.trim()),
-      createdBy:localStorage.getItem('userId'),
-      // createdBy: parseInt(localStorage.getItem('id'), 10),
+      createdBy: localStorage.getItem('userId'),
       createDate: new Date().toISOString(),
       lastModifiedDate: new Date().toISOString(),
       daysRemaining: ' ', // 계산 후 추가할 수 있음
@@ -175,16 +172,50 @@ function CoslowChallenge_main() {
     }
   };
 
+  //챌린지 저장
+const handleSaveIconClick = async (id) => {
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('accessToken');
+  
+  const data = {
+    challengeId: parseInt(id, 10),
+    userId: parseInt(userId, 10),
+  };
+
+  // 출력할 콘솔 로그 추가
+  console.log('클릭한 챌린지 ID:', id);
+  console.log('저장된 User ID:', userId);
+  console.log('저장된 Token:', token);
+  console.log('보내는 데이터:', data);
+
+  try {
+    const response = await axios.post('http://localhost:8080/challenges/save', data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('챌린지 저장 성공:', response.data);
+  } catch (error) {
+    console.error('챌린지 저장 실패:', error);
+    console.error('오류 응답 데이터:', error.response ? error.response.data : 'No response data');
+    console.error('오류 상태:', error.response ? error.response.status : 'No response status');
+    console.error('오류 헤더:', error.response ? error.response.headers : 'No response headers');
+  }
+};
+
+  
+
   const mapTitleToChallengeType = (title) => {
     const normalizedTitle = title.replace(/\n/g, '').trim(); // 줄바꿈과 공백 제거
     switch (normalizedTitle) {
-      case "계란으로하루 한끼 요리하기":
+      case "계란으로 하루 한끼 요리하기":
         return 'egg';
       case "코슬로와 함께하는저속노화 첫걸음 챌린지":
         return 'firststep';
       case "채소 듬뿍 일주일 챌린지":
         return 'fullvegetable';
-      case "'샐러드판다’샐러드 16종 한달 챌린지":
+      case "‘샐러드판다’샐러드 16종 한달 챌린지":
         return 'SaleSalad';
       case "‘다신샵’닭가슴살 한달 챌린지":
         return 'DasinShop';
@@ -216,245 +247,246 @@ function CoslowChallenge_main() {
   const categories = ['마감순', '인기순', '최신순'];
 
   return (
-      <div className="Challenge-container">
-        <div className="Coslow-main">
-          <div className="Coslow-header">
-            <div className="Coslow-header-layout">
-              <div className="header-left">
-                <div className="header-logo">CO-SLOW</div>
-              </div>
-              <div className="header-right">
-                <div className="header-challenge">챌린지</div>  
-                <div className="header-record" onClick={handleRecordMainClick}>나의기록</div>
-                <div className="header-mypage">마이페이지</div>
-                <div className="header-logout" onClick={handleCoslowBannerClick}>로그아웃</div>
-              </div>
+    <div className="Challenge-container">
+      <div className="Challenge-Coslow-main">
+        <div className="Coslow-header">
+          <div className="Coslow-header-layout">
+            <div className="header-left">
+              <div className="header-logo">CO-SLOW</div>
+            </div>
+            <div className="header-right">
+              <div className="header-challenge">챌린지</div>
+              <div className="header-record" onClick={handleRecordMainClick}>나의기록</div>
+              <div className="header-mypage">마이페이지</div>
+              <div className="header-logout" onClick={handleCoslowBannerClick}>로그아웃</div>
             </div>
           </div>
-  
-          <div className='challenge-header'>
-            <div className="search-wrapper">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="search-input"
-                placeholder=" "
-              />
-              <div className="search-icon"></div>
-            </div>
-            <div className="Order-category">
-              {categories.map((order_category) => (
-                <span
-                  key={order_category}
-                  className={activeCategory === order_category ? 'active' : ''}
-                  onClick={() => handleCategoryClick(order_category)}
-                >
-                  {order_category}
-                </span>
-              ))}
-            </div>
+        </div>
+
+        <div className='challenge-header'>
+          <div className="search-wrapper">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+              placeholder=" "
+            />
+            <div className="search-icon"></div>
           </div>
-  
-          <div className='challenge-sub-container'>
-            <div className="challenge-options">
-              {['코슬로 챌린지', '제휴 챌린지', '유저끼리 챌린지'].map((option) => (
-                <div
-                  key={option}
-                  className={option === activeOption ? 'active' : ''}
-                  onClick={() => handleOptionClick(option)}
-                >
-                  {option}
-                </div>
-              ))}
+          <div className="Order-category">
+            {categories.map((order_category) => (
+              <span
+                key={order_category}
+                className={activeCategory === order_category ? 'active' : ''}
+                onClick={() => handleCategoryClick(order_category)}
+              >
+                {order_category}
+              </span>
+            ))}
+          </div>
+        </div>
+        
+        <div className='Challenge-subcontainer'>
+          <div className="challenge-options">
+            {['코슬로 챌린지', '제휴 챌린지', '유저끼리 챌린지'].map((option) => (
+              <div
+                key={option}
+                className={option === activeOption ? 'active' : ''}
+                onClick={() => handleOptionClick(option)}
+              >
+                {option}
+              </div>
+            ))}
+          </div>
+
+          {showImage && (
+            <div className="plus-img" onClick={handlePlusImageClick}>
+              <img src={plus} alt="plus-challenge" />
             </div>
-  
-            <div className="challenge-list">
-              {filteredChallenges.map((challenge) => {
-                let statusClass = '';
-                let statusText = '';
-  
-                if (challenge.status === 'RECRUITING') {
-                  statusClass = 'status-recruiting';
-                  statusText = (
-                    <>
-                      <div className="status-recruiting-text">모집중</div>
-                      <div className="status-days-remaining">{challenge.daysRemaining}</div>
-                    </>
-                  );
-                } else if (challenge.status === 'COMPLETED') {
-                  statusClass = 'status-closed';
-                  statusText = '종료';
-                } else if (challenge.status === 'PROCEEDING') {
-                  statusClass = 'status-ongoing';
-                  statusText = '진행중';
-                }
-  
-                return (
-                  <div 
-                    key={`${challenge.id}`}
-                    className="challenge-box"
-                    onClick={() => handleChallengeClick(challenge.id, challenge.title)}
-                  >
-                    <div 
-                      className="challenge-title" 
-                      dangerouslySetInnerHTML={{ __html: formatTitle(challenge.title) }}
-                    ></div>
-                    <div className='save-icon'>
-                      <img src={saveicon} alt="save-icon" />
-                    </div>
-                    <div className={`challenge-status ${statusClass}`}>
-                      {statusText}
-                    </div>
-                  </div>
+          )}
+
+          <div className="challenge-list">
+            {filteredChallenges.map((challenge) => {
+              let statusClass = '';
+              let statusText = '';
+
+              if (challenge.status === 'RECRUITING') {
+                statusClass = 'status-recruiting';
+                statusText = (
+                  <>
+                    <div className="status-recruiting-text">모집중</div>
+                    <div className="status-days-remaining">{challenge.daysRemaining}</div>
+                  </>
                 );
-              })}
-            </div>
-            {showImage && (
-                <div className="plus-img" onClick={handlePlusImageClick}>
-                  <img src={plus} alt="plus-challenge" />
+              } else if (challenge.status === 'COMPLETED') {
+                statusClass = 'status-closed';
+                statusText = '종료';
+              } else if (challenge.status === 'PROCEEDING') {
+                statusClass = 'status-ongoing';
+                statusText = '진행중';
+              }
+
+              return (
+                <div 
+                  key={`${challenge.id}`}
+                  className="challenge-box"
+                  onClick={() => handleChallengeClick(challenge.id, challenge.title)}
+                >
+                  <div 
+                    className="challenge-title" 
+                    dangerouslySetInnerHTML={{ __html: formatTitle(challenge.title) }}
+                  ></div>
+                  <div className='save-icon' onClick={(e) => { e.stopPropagation(); handleSaveIconClick(challenge.id); }}>
+                    <img src={saveicon} alt="save-icon" />
+                  </div>
+                  <div className={`challenge-status ${statusClass}`}>
+                    {statusText}
+                  </div>
                 </div>
-              )}
+              );
+            })}
           </div>
-  
-          {/* 모달 컴포넌트 */}
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={() => setModalIsOpen(false)} // 모달 외부 클릭 시 모달 닫기
-            contentLabel="챌린지 만들기" 
-            className="challengeModal"
-            overlayClassName="modal-overlay"
-          >
-            <div className="challengeModal-content">
-              <div className="modal-challenge">챌린지 만들기</div>
-              <div className="challengeModal-container">
-                <div className='modal-title-contents'>
-                  <div>
-                    <label>
-                      <input 
-                        type="text" 
-                        className="title" 
-                        placeholder="제목을 입력해주세요" 
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <input 
-                        type="text" 
-                        className="hash-tag" 
-                        placeholder="해시태그(최대 N개)" 
-                        value={tags}
-                        onChange={(e) => setTags(e.target.value)}
-                        required
-                      />
-                    </label>
-                  </div>
-                </div>
-  
-                <div className="challenge-term">
-                  <div className="challenge-term-text">기간 정하기</div>
-                  <div className="term-button">
-                    <button
-                      className={`oneweek ${selectedTerm === '1주' ? 'active' : ''}`}
-                      onClick={() => handlePresetTermClick('1주')}
-                    >
-                      1주
-                    </button>
-                    <button
-                      className={`twoweek ${selectedTerm === '2주' ? 'active' : ''}`}
-                      onClick={() => handlePresetTermClick('2주')}
-                    >
-                      2주
-                    </button>
-                    <button
-                      className={`onemonth ${selectedTerm === '1달' ? 'active' : ''}`}
-                      onClick={() => handlePresetTermClick('1달')}
-                    >
-                      1달
-                    </button>
-                    <button
-                      className={`selfwrite ${isCustomTerm ? 'active' : ''}`}
-                      onClick={handleCustomTermClick}
-                    >
-                      직접입력
-                    </button>
-                  </div>
-                  {isCustomTerm && (
-                    <div className="input-term">
-                      <label>
-                        <input 
-                          type="text" 
-                          name="start-date" 
-                          placeholder="YYYY.MM.DD" 
-                          value={startDate}
-                          onChange={(e) => setStartDate(e.target.value)}
-                          required
-                        />
-                      </label>
-                      <span className="term-icon">-</span>
-                      <label>
-                        <input 
-                          type="text" 
-                          name="end-date" 
-                          placeholder="YYYY.MM.DD" 
-                          value={endDate}
-                          onChange={(e) => setEndDate(e.target.value)}
-                          required
-                        />
-                      </label>
-                    </div>
-                  )}
-                </div>
-  
-                <div className='certification-num-contents'>
-                  <div className='certification-num-text'>인증 횟수(1주)</div>
+        </div>
+
+        {/* 모달 컴포넌트 */}
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)} // 모달 외부 클릭 시 모달 닫기
+          contentLabel="챌린지 만들기" 
+          className="challengeModal"
+          overlayClassName="modal-overlay"
+        >
+          <div className="challengeModal-content">
+            <div className="modal-challenge">챌린지 만들기</div>
+            <div className="challengeModal-container">
+              <div className='modal-title-contents'>
+                <div>
                   <label>
                     <input 
                       type="text" 
-                      name="certification-num" 
-                      placeholder="" 
-                      value={certificationNum}
-                      onChange={(e) => setCertificationNum(e.target.value)}
-                      required 
+                      className="title" 
+                      placeholder="제목을 입력해주세요" 
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
                     />
                   </label>
-                  <span className="certification-num-2">회</span>
                 </div>
-                <div className='max-person-contents'>
-                  <div className='max-person-text'>
-                    <div className='max-person-text-1'>최대 인원</div>
-                    <div className='max-person-text-2'>*최대 NN명까지 가능합니다.</div>
-                  </div>
+                <div>
                   <label>
                     <input 
                       type="text" 
-                      name="max-person-num" 
-                      placeholder="" 
-                      value={maxPersonNum}
-                      onChange={(e) => setMaxPersonNum(e.target.value)}
-                      required 
+                      className="hash-tag" 
+                      placeholder="해시태그(최대 N개)" 
+                      value={tags}
+                      onChange={(e) => setTags(e.target.value)}
+                      required
                     />
                   </label>
-                  <span className="max-person-num-2">명</span>
                 </div>
-                <div className='challenge-modal-submit-button'>
-                  <button 
-                    className='make-challenge-button' 
-                    onClick={handleSubmit}
+              </div>
+
+              <div className="challenge-term">
+                <div className="challenge-term-text">기간 정하기</div>
+                <div className="term-button">
+                  <button
+                    className={`oneweek ${selectedTerm === '1주' ? 'active' : ''}`}
+                    onClick={() => handlePresetTermClick('1주')}
                   >
-                    만들기
+                    1주
+                  </button>
+                  <button
+                    className={`twoweek ${selectedTerm === '2주' ? 'active' : ''}`}
+                    onClick={() => handlePresetTermClick('2주')}
+                  >
+                    2주
+                  </button>
+                  <button
+                    className={`onemonth ${selectedTerm === '1달' ? 'active' : ''}`}
+                    onClick={() => handlePresetTermClick('1달')}
+                  >
+                    1달
+                  </button>
+                  <button
+                    className={`selfwrite ${isCustomTerm ? 'active' : ''}`}
+                    onClick={handleCustomTermClick}
+                  >
+                    직접입력
                   </button>
                 </div>
+                {isCustomTerm && (
+                  <div className="input-term">
+                    <label>
+                      <input 
+                        type="text" 
+                        name="start-date" 
+                        placeholder="YYYY.MM.DD" 
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        required
+                      />
+                    </label>
+                    <span className="term-icon">-</span>
+                    <label>
+                      <input 
+                        type="text" 
+                        name="end-date" 
+                        placeholder="YYYY.MM.DD" 
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        required
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+
+              <div className='certification-num-contents'>
+                <div className='certification-num-text'>인증 횟수(1주)</div>
+                <label>
+                  <input 
+                    type="text" 
+                    name="certification-num" 
+                    placeholder="" 
+                    value={certificationNum}
+                    onChange={(e) => setCertificationNum(e.target.value)}
+                    required 
+                  />
+                </label>
+                <span className="certification-num-2">회</span>
+              </div>
+              <div className='max-person-contents'>
+                <div className='max-person-text'>
+                  <div className='max-person-text-1'>최대 인원</div>
+                  <div className='max-person-text-2'>*최대 NN명까지 가능합니다.</div>
+                </div>
+                <label>
+                  <input 
+                    type="text" 
+                    name="max-person-num" 
+                    placeholder="" 
+                    value={maxPersonNum}
+                    onChange={(e) => setMaxPersonNum(e.target.value)}
+                    required 
+                  />
+                </label>
+                <span className="max-person-num-2">명</span>
+              </div>
+              <div className='challenge-modal-submit-button'>
+                <button 
+                  className='make-challenge-button' 
+                  onClick={handleSubmit}
+                >
+                  만들기
+                </button>
               </div>
             </div>
-          </Modal>
-        </div>
+          </div>
+        </Modal>
       </div>
-    );
-  }
-  
-  export default CoslowChallenge_main;
+    </div>
+  );
+}
+
+export default CoslowChallenge_main;
