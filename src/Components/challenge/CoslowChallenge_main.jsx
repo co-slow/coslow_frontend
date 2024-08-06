@@ -189,7 +189,7 @@ const handleSaveIconClick = async (id) => {
   console.log('보내는 데이터:', data);
 
   try {
-    const response = await axios.post('https://api.coslow.site/challenges/save', data, {
+    const response = await axios.post('http://localhost:8080/challenges/save', data, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -209,13 +209,13 @@ const handleSaveIconClick = async (id) => {
   const mapTitleToChallengeType = (title) => {
     const normalizedTitle = title.replace(/\n/g, '').trim(); // 줄바꿈과 공백 제거
     switch (normalizedTitle) {
-      case "계란으로하루 한끼 요리하기":
+      case "계란으로 하루 한끼 요리하기":
         return 'egg';
       case "코슬로와 함께하는저속노화 첫걸음 챌린지":
         return 'firststep';
       case "채소 듬뿍 일주일 챌린지":
         return 'fullvegetable';
-      case "'샐러드판다’샐러드 16종 한달 챌린지":
+      case "‘샐러드판다’샐러드 16종 한달 챌린지":
         return 'SaleSalad';
       case "‘다신샵’닭가슴살 한달 챌린지":
         return 'DasinShop';

@@ -15,6 +15,11 @@ import UserChallenge_detail from './Components/challenge/UserChallenge_detail';
 import Loginredirect from './Components/mainpage/loginredirect';
 import Mypage_main from './Components/mypage/Mypage_main';
 import SaveChallenges from './Components/mypage/SaveChallenges';
+import Record_main from './Components/myrecord/Record_main';
+import Record_mydiet from './Components/myrecord/Record_mydiet';
+import Record_detail from './Components/myrecord/Record_detail';
+import Record_write from './Components/myrecord/Record_write';
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -31,6 +36,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/UserChallenge_detail/:id" element={<UserChallenge_detail />} /> 
         <Route path="/Mypage_main" element={<Mypage_main/>}/>
         <Route path="/SaveChallenges" element={<SaveChallenges/>}/>
+
+        <Route path='/record' element={<Record_main/>}/>
+        <Route path='/recordmydiet' element={<Record_mydiet/>}/>
+        <Route path='/recordDetail' element={<Record_detail/>}/>
+        <Route path='/recordWrite' element={<Record_write/>}/>
       </Routes>
     </Router>
   </React.StrictMode>,

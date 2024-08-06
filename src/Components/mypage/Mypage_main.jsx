@@ -96,9 +96,9 @@ function Mypage_main() {
   };
 
   const getProgressPercentage = (charLevel, challengeCount) => {
-    const nextRank = charLevel + 1;
-    const threshold = rankThresholds[nextRank] || Infinity;
-    return Math.min((challengeCount / threshold) * 100, 100);
+    const totalChallenges = rankThresholds[charLevel];
+    const percentage = (challengeCount / totalChallenges) * 100;
+    return Math.min(percentage, 100);
   };
 
   const openRankModal = () => {
@@ -122,10 +122,8 @@ function Mypage_main() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const userId = parseInt(localStorage.getItem('userId'), 10);
         const token = localStorage.getItem('accessToken');
         const response = await axios.get('http://localhost:8080/mypage', {
-          // params: { userId },
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -133,7 +131,7 @@ function Mypage_main() {
         });
         console.log('가져온 데이터: ', response.data);
 
-        const { charLevel: charLevel, charPoint, challengeCount } = response.data;
+        const { charLevel, charPoint, challengeCount } = response.data;
         const currentLevel = parseInt(charLevel, 10); // Ensure it's an integer
 
         setUserData({
@@ -148,6 +146,22 @@ function Mypage_main() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const updateLevel = () => {
+      const { charLevel, challengeCount } = userData;
+      const nextLevel = charLevel + 1;
+      if (challengeCount >= rankThresholds[charLevel] && charLevel < Object.keys(rankThresholds).length) {
+        setUserData((prevData) => ({
+          ...prevData,
+          charLevel: nextLevel,
+          challengeCount: challengeCount - rankThresholds[charLevel] // Reset the challenge count for the new level
+        }));
+      }
+    };
+
+    updateLevel();
+  }, [userData.challengeCount]);
 
   useEffect(() => {
     const percentage = getProgressPercentage(userData.charLevel, userData.challengeCount);
@@ -258,7 +272,7 @@ function Mypage_main() {
               <span>{nextRank}이가 되기까지</span>
               <div className="percent-content">
                 <div className="percent">{progressPercentage.toFixed(1)}%</div>
-                <span>남았어요!</span>
+                <span>진행했어요!</span>
               </div>
             </div>
             <div className="character-progress-bar">
@@ -273,6 +287,7 @@ function Mypage_main() {
           </div>
         </div>
       </div>
+
 
       {/* Modals for Rank and Reward */}
       <Modal

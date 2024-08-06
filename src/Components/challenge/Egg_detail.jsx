@@ -37,7 +37,7 @@ function Egg_detail() {
   useEffect(() => {
     // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
     if (challenges.length > 0) {
-      const challenge = challenges.find(challenge => challenge.title === '계란으로\n하루 한끼 요리하기');
+      const challenge = challenges.find(challenge => challenge.title === '계란으로 하루 한끼 요리하기');
       setFilteredChallenge(challenge);
 
       if (challenge) {
@@ -118,6 +118,39 @@ function Egg_detail() {
     navigate(-1);
   };
 
+
+      //챌린지 저장
+const handleSaveIconClick = async (id) => {
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('accessToken');
+  
+  const data = {
+    challengeId: parseInt(id, 10),
+    userId: parseInt(userId, 10),
+  };
+
+  // 출력할 콘솔 로그 추가
+  console.log('클릭한 챌린지 ID:', id);
+  console.log('저장된 User ID:', userId);
+  console.log('저장된 Token:', token);
+  console.log('보내는 데이터:', data);
+
+  try {
+    const response = await axios.post('http://localhost:8080/challenges/save', data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('챌린지 저장 성공:', response.data);
+  } catch (error) {
+    console.error('챌린지 저장 실패:', error);
+    console.error('오류 응답 데이터:', error.response ? error.response.data : 'No response data');
+    console.error('오류 상태:', error.response ? error.response.status : 'No response status');
+    console.error('오류 헤더:', error.response ? error.response.headers : 'No response headers');
+  }
+};
+
   return (
     <div className="Egg-container">
       <div className="Coslow-main">
@@ -155,7 +188,7 @@ function Egg_detail() {
                 {/* {filteredChallenge.어쩌고} */}
                 <button className="Egg-attend-button" onClick={handleChallengeApplyClick}>챌린지 참가하기</button>
               </div>
-              <div className="egg-img">
+              <div className="egg-img" onClick={(e) => { e.stopPropagation(); handleSaveIconClick(challenges.id); }}>
                 <img src={egg} alt="Egg" />
               </div>
             </div>

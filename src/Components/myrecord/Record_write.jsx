@@ -1,8 +1,8 @@
-import "./DietRecord_write.css";
+import "./Record_write.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 
-function DietRecord_write(){
+function Record_write(){
 
   const [imageSrc, setImageSrc] = useState(null);
   const [text, setText] = useState('');
@@ -106,4 +106,4 @@ function DietRecord_write(){
   
 }
 
-export default DietRecord_write;
+export default Record_write;

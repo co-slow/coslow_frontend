@@ -39,9 +39,8 @@ function SaleSalad_detail() {
   useEffect(() => {
     // 데이터가 로드된 후 타이틀에 맞는 데이터를 필터링 (백엔드 만들어진후 수정..)
     if (challenges.length > 0) {
-      const challenge = challenges.find(challenge => challenge.title === "'샐러드판다’\n샐러드 16종 한달 챌린지");
+      const challenge = challenges.find(challenge => challenge.title === "‘샐러드판다’\n샐러드 16종 한달 챌린지");
       setFilteredChallenge(challenge);
-
       if (challenge) {
         fetchParticipantCount(challenge.id); // 참가자 수 가져오기
       }
@@ -130,6 +129,39 @@ function SaleSalad_detail() {
     navigate(-1);
   };
 
+  
+    //챌린지 저장
+const handleSaveIconClick = async (id) => {
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('accessToken');
+  
+  const data = {
+    challengeId: parseInt(id, 10),
+    userId: parseInt(userId, 10),
+  };
+
+  // 출력할 콘솔 로그 추가
+  console.log('클릭한 챌린지 ID:', id);
+  console.log('저장된 User ID:', userId);
+  console.log('저장된 Token:', token);
+  console.log('보내는 데이터:', data);
+
+  try {
+    const response = await axios.post('http://localhost:8080/challenges/save', data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('챌린지 저장 성공:', response.data);
+  } catch (error) {
+    console.error('챌린지 저장 실패:', error);
+    console.error('오류 응답 데이터:', error.response ? error.response.data : 'No response data');
+    console.error('오류 상태:', error.response ? error.response.status : 'No response status');
+    console.error('오류 헤더:', error.response ? error.response.headers : 'No response headers');
+  }
+};
+
   return (
     <div className="SaleSalad-container">
       <div className="Coslow-main">
@@ -167,7 +199,7 @@ function SaleSalad_detail() {
                 {/* {filteredChallenge.어쩌고} */}
                 <button className="SaleSalad-attend-button" onClick={handleChallengeApplyClick}>챌린지 참가하기</button>
               </div>
-              <div className="SaleSalad-img">
+              <div className="SaleSalad-img" onClick={(e) => { e.stopPropagation(); handleSaveIconClick(challenges.id); }}>
                 <img src={salesalad} alt="SaleSalad_image" />
               </div>
             </div>

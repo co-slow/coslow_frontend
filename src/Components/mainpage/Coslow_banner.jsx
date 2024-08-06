@@ -11,7 +11,7 @@ Modal.setAppElement('#root');
 function Coslow_banner(){
 
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
-  const [signupModalIsOpen, setSignupModalIsOpen] = useState(false);
+  // const [signupModalIsOpen, setSignupModalIsOpen] = useState(false);
 
 
   const openLoginModal = () => {
@@ -20,15 +20,6 @@ function Coslow_banner(){
 
   const closeLoginModal = () => {
     setLoginModalIsOpen(false);
-  };
-
-  const openSignupModal = () => {
-    setSignupModalIsOpen(true);
-    setLoginModalIsOpen(false);
-  };
-
-  const closeSignupModal = () => {
-    setSignupModalIsOpen(false);
   };
 
 
@@ -48,7 +39,7 @@ function Coslow_banner(){
   return(
     <div className="Coslow-container">
       <div className="Coslow-main">
-      <div className={`main ${loginModalIsOpen || signupModalIsOpen ? 'modal-open' : ''}`}>
+      <div className={`main ${loginModalIsOpen ? 'modal-open' : ''}`}>
         <div className="Coslow-header1">
           <div className="Coslow-header-layout1">
             <div className="header-left1">
@@ -91,31 +82,7 @@ function Coslow_banner(){
                 <span className="button-text">카카오로 로그인</span>
               </button>
             </div> 
-          <div className="modal-login-container">
-              <div>CO-SLOW가 처음이신가요?</div><div onClick={openSignupModal} style={{ color: '#3CB502' }}>회원가입하기</div>
           </div>
-
-          </div>
-      </Modal>
-
-      <Modal
-        isOpen={signupModalIsOpen}
-        onRequestClose={closeSignupModal}
-        contentLabel="회원가입"
-        className="modal2"
-        overlayClassName="overlay"
-      >
-        <div className="modal-content">
-          <div className='modal-join'>회원가입</div>
-        </div>
-        <div className="modal-join-footer2">
-          <button className="modal-join-button2">
-            <div className="kakao-img">
-              <img src={kakao} alt="kakao_image" />
-            </div>
-            <span className="button-text">카카오로 시작하기</span>
-          </button>
-        </div>
       </Modal>
       </div>
     </div>
